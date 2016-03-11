@@ -1,0 +1,115 @@
+<?xml version="1.0"?>
+<Actions>
+	<!-- ******************************************************* -->
+	<!-- Actions which are generated into receiver-wide commands -->
+	<!-- ******************************************************* -->
+	<Action id="changePower" deviceFilter="self.daytonAudioReceiver">
+		<Name>Set Power (All Zones)</Name>
+		<ConfigUI>
+			<Field type="menu" id="powerState">
+				<Label>Turn Zones:</Label>
+				<List>
+					<Option value="00">Off</Option>
+					<Option value="01">On</Option>
+				</List>
+			</Field>
+		</ConfigUI>
+		<CallbackMethod>executeAction</CallbackMethod>
+	</Action>
+	<Action id="changeSource" deviceFilter="self.daytonAudioReceiver">
+		<Name>Set Source (All Zones)</Name>
+		<ConfigUI>
+			<Field type="menu" id="zoneSource">
+				<Label>Set Source:</Label>
+				<List class="self" filter="" method="getConfigDialogMenu" />
+			</Field>
+		</ConfigUI>
+		<CallbackMethod>executeAction</CallbackMethod>
+	</Action>
+	<Action id="sep01" />
+	
+	
+	
+	<!-- ******************************************************* -->
+	<!-- Actions which are generated into zone-specific commands -->
+	<!-- ******************************************************* -->
+	<Action id="changeZoneSource" deviceFilter="self.daytonAudioZone">
+		<Name>Set Zone Source</Name>
+		<ConfigUI>
+			<Field type="menu" id="zoneSource">
+				<Label>Set Source:</Label>
+				<List class="self" filter="" method="getConfigDialogMenu" />
+			</Field>
+		</ConfigUI>
+		<CallbackMethod>executeAction</CallbackMethod>
+	</Action>
+	<Action id="sep04" />
+	
+	<Action id="setZoneVolume" deviceFilter="self.daytonAudioZone">
+		<Name>Zone Volume - Set Value</Name>
+		<ConfigUI>
+			<Field id="volumeTarget" type="textfield">
+				<Label>Set To (0-38):</Label>
+			</Field>
+		</ConfigUI>
+		<CallbackMethod>executeAction</CallbackMethod>
+	</Action>
+	<Action id="adjustZoneVolume" deviceFilter="self.daytonAudioZone">
+		<Name>Zone Volume - Adjust Up/Down</Name>
+		<ConfigUI>
+			<Field id="instructions" type="label" fontSize="small">
+				<Label>This action relies on the current state of the device in Indigo; if you are using non-Indigo controls such as wall pads, please be sure polling for status is setup in the device configuration dialog.</Label>
+			</Field>
+			<Field id="volumeAdjustment" type="textfield">
+				<Label>Adjust By (negative allowed):</Label>
+			</Field>
+		</ConfigUI>
+		<CallbackMethod>executeAction</CallbackMethod>
+	</Action>
+	<Action id="setZoneMute" deviceFilter="self.daytonAudioZone">
+		<Name>Zone Mute - Set</Name>
+		<ConfigUI>
+			<Field type="menu" id="muteState">
+				<Label>Turn Zone Mute:</Label>
+				<List>
+					<Option value="00">Un-muted</Option>
+					<Option value="01">Muted</Option>
+				</List>
+			</Field>
+		</ConfigUI>
+		<CallbackMethod>executeAction</CallbackMethod>
+	</Action>
+	<Action id="toggleZoneMuteStatus" deviceFilter="self.daytonAudioZone">
+		<Name>Zone Mute - Toggle</Name>
+		<CallbackMethod>executeAction</CallbackMethod>
+	</Action>
+	<Action id="sep05" />
+	
+	<Action id="setZoneTreble" deviceFilter="self.daytonAudioZone">
+		<Name>Zone Treble - Set Value</Name>
+		<ConfigUI>
+			<Field id="trebleValue" type="textfield">
+				<Label>Set To (0-14):</Label>
+			</Field>
+		</ConfigUI>
+		<CallbackMethod>executeAction</CallbackMethod>
+	</Action>
+	<Action id="setZoneBass" deviceFilter="self.daytonAudioZone">
+		<Name>Zone Bass - Set Value</Name>
+		<ConfigUI>
+			<Field id="bassValue" type="textfield">
+				<Label>Set To (0-14):</Label>
+			</Field>
+		</ConfigUI>
+		<CallbackMethod>executeAction</CallbackMethod>
+	</Action>
+	<Action id="setZoneBalance" deviceFilter="self.daytonAudioZone">
+		<Name>Zone Balance - Set Value</Name>
+		<ConfigUI>
+			<Field id="balanceValue" type="textfield">
+				<Label>Set To (0-20):</Label>
+			</Field>
+		</ConfigUI>
+		<CallbackMethod>executeAction</CallbackMethod>
+	</Action>
+</Actions>

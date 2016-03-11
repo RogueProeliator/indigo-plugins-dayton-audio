@@ -1,0 +1,312 @@
+<RPFrameworkConfig>
+	<pluginConfig>
+		<guiConfiguration>
+			<pluginUpdateURL><![CDATA[http://forums.indigodomo.com/viewforum.php?f=59]]></pluginUpdateURL>
+		</guiConfiguration>
+		<deviceMapping>
+			<device indigoId="daytonAudioReceiver" className="DaytonAudioReceiverDevice" />
+			<device indigoId="daytonAudioZone" className="DaytonAudioZone" />
+		</deviceMapping>
+		<devices>
+			<device indigoId="daytonAudioReceiver">
+				<params>
+					<param indigoId="serialPort" paramType="ParamTypeString" isRequired="True">
+						<invalidValueMessage><![CDATA[Please select the serial port to which the receiver is attached]]></invalidValueMessage>
+					</param>
+					<param indigoId="zonePollInterval" paramType="ParamTypeInteger" isRequired="True">
+						<invalidValueMessage><![CDATA[Please enter the seconds (0-10000) between poll intervals]]></invalidValueMessage>
+						<minValue>0</minValue>
+						<maxValue>10000</maxValue>
+					</param>
+					<param indigoId="connectedSlaveUnits" paramType="ParamTypeInteger" isRequired="True">
+						<invalidValueMessage><![CDATA[Please enter the number of attached slave receivers]]></invalidValueMessage>
+						<minValue>0</minValue>
+						<maxValue>2</maxValue>
+					</param>
+				</params>
+				<guiConfiguration>
+					<deviceAddressFormat><![CDATA[%ap:serialPort%]]></deviceAddressFormat>
+					<telnetConnectionDeviceStateName>connectionState</telnetConnectionDeviceStateName>
+					<telnetConnectionDeviceStateBoolean>isConnected</telnetConnectionDeviceStateBoolean>
+					<updateStatusPollerIntervalProperty>zonePollInterval</updateStatusPollerIntervalProperty>
+					<updateStatusPollerActionId>updateDeviceStatesFromReceiver</updateStatusPollerActionId>
+					<serialPortName><![CDATA[%dp:serialPort%]]></serialPortName>
+					<serialPortBaud>9600</serialPortBaud>
+					<serialPortParity>PARITY_NONE</serialPortParity>
+					<serialPortByteSize>EIGHTBITS</serialPortByteSize>
+					<serialPortStopBits>STOPBITS_ONE</serialPortStopBits>
+					<telnetDeviceReadTimeout>0.5</telnetDeviceReadTimeout>
+					<telnetDeviceWriteTimeout>1.0</telnetDeviceWriteTimeout>
+					<deviceIsChildDevice>False</deviceIsChildDevice>
+					<childDeviceDictionaryKeyFormat><![CDATA[%dp:zoneNumber%]]></childDeviceDictionaryKeyFormat>
+				</guiConfiguration>
+				<deviceResponses>
+					<response id="zoneStatusResponse" respondToActionId="">
+						<criteriaFormatString><![CDATA[%cp:response%]]></criteriaFormatString>
+						<matchExpression><![CDATA[^\s*#>\d{22}\s*$]]></matchExpression>
+						<effects>
+							<effect effectType="RESPONSE_EFFECT_CALLBACK" evalResult="false">
+								<updateParam>zoneStatusResponseReceived</updateParam>
+								<updateValueFormat></updateValueFormat>
+							</effect>
+						</effects>
+					</response>
+				</deviceResponses>
+			</device>
+			<device indigoId="daytonAudioZone">
+				<params>
+					<param indigoId="sourceReceiver" paramType="ParamTypeString" isRequired="True">
+						<invalidValueMessage><![CDATA[Please select the receiver to which this zone should be associated]]></invalidValueMessage>
+					</param>
+					<param indigoId="zoneNumber" paramType="ParamTypeInteger" isRequired="True">
+						<invalidValueMessage><![CDATA[Please select the zone number on the Dayton Audio Receiver for this device]]></invalidValueMessage>
+						<minValue>1</minValue>
+						<maxValue>18</maxValue>
+					</param>
+				</params>
+				<guiConfiguration>
+					<deviceAddressFormat><![CDATA[Zone %ap:zoneNumber%]]></deviceAddressFormat>
+					<deviceIsChildDevice>True</deviceIsChildDevice>
+					<deviceParentIdProperty>sourceReceiver</deviceParentIdProperty>
+				</guiConfiguration>
+			</device>
+		</devices>
+		<actions>
+			<!-- MISC ACTIONS (NOT TIED TO DEVICE) -->
+			<action indigoId="updateDeviceStatesFromReceiver">
+				<commands>
+					<command>
+						<commandName>createAllZonesStatusRequestCommands</commandName>
+						<commandFormat></commandFormat>
+					</command>
+				</commands>
+			</action>
+			
+			
+			<!-- ZONE DEVICE ACTIONS -->
+			<action indigoId="changeZoneSource">
+				<params>
+					<param indigoId="zoneSource" paramType="ParamTypeString" isRequired="True">
+						<invalidValueMessage><![CDATA[Please select the new source for the zone]]></invalidValueMessage>
+					</param>
+				</params>
+				<commands>
+					<command>
+						<commandName>writeToTelnetConn</commandName>
+						<commandFormat><![CDATA[eval:"<" + str((int(%dp:zoneNumber% / 6)) + 1) + str(%dp:zoneNumber% % 6) + "CH0" + "%ap:zoneSource%"]]></commandFormat>
+					</command>
+					<command>
+						<commandName>writeToTelnetConn</commandName>
+						<commandFormat><![CDATA[eval:"?" + str((int(%dp:zoneNumber% / 6)) + 1) + str(%dp:zoneNumber% % 6)]]></commandFormat>
+					</command>
+				</commands>
+			</action>
+			<action indigoId="setZoneVolume">
+				<params>
+					<param indigoId="volumeTarget" paramType="ParamTypeInteger" isRequired="True">
+						<invalidValueMessage><![CDATA[Please enter the new volume level between 0 and 38.]]></invalidValueMessage>
+						<minValue>0</minValue>
+						<maxValue>38</maxValue>
+					</param>
+				</params>
+				<commands>
+					<command>
+						<commandName>writeToTelnetConn</commandName>
+						<commandFormat><![CDATA[eval:"<" + str((int(%dp:zoneNumber% / 6)) + 1) + str(%dp:zoneNumber% % 6) + "VO" + "%ap:volumeTarget%".zfill(2)]]></commandFormat>
+					</command>
+					<command>
+						<commandName>writeToTelnetConn</commandName>
+						<commandFormat><![CDATA[eval:"?" + str((int(%dp:zoneNumber% / 6)) + 1) + str(%dp:zoneNumber% % 6)]]></commandFormat>
+					</command>
+				</commands>
+			</action>
+			<action indigoId="adjustZoneVolume">
+				<params>
+					<param indigoId="volumeAdjustment" paramType="ParamTypeInteger" isRequired="True">
+						<invalidValueMessage><![CDATA[Please enter the amount by which the volume should be adjusted.]]></invalidValueMessage>
+						<minValue>-38</minValue>
+						<maxValue>38</maxValue>
+					</param>
+				</params>
+				<commands>
+					<command>
+						<commandName>writeToTelnetConn</commandName>
+						<commandFormat><![CDATA[eval:"<" + str((int(%dp:zoneNumber% / 6)) + 1) + str(%dp:zoneNumber% % 6) + "VO" + str(max(min(%ds:volume% + %ap:volumeAdjustment%, 38), 0)).zfill(2)]]></commandFormat>
+					</command>
+					<command>
+						<commandName>writeToTelnetConn</commandName>
+						<commandFormat><![CDATA[eval:"?" + str((int(%dp:zoneNumber% / 6)) + 1) + str(%dp:zoneNumber% % 6)]]></commandFormat>
+					</command>
+				</commands>
+			</action>
+			<action indigoId="setZoneMute">
+				<params>
+					<param indigoId="muteState" paramType="ParamTypeString" isRequired="True">
+						<invalidValueMessage><![CDATA[Please select the new mute value for the zone]]></invalidValueMessage>
+					</param>
+				</params>
+				<commands>
+					<command>
+						<commandName>writeToTelnetConn</commandName>
+						<commandFormat><![CDATA[eval:"<" + str((int(%dp:zoneNumber% / 6)) + 1) + str(%dp:zoneNumber% % 6) + "MU" + "%ap:muteState%"]]></commandFormat>
+					</command>
+					<command>
+						<commandName>writeToTelnetConn</commandName>
+						<commandFormat><![CDATA[eval:"?" + str((int(%dp:zoneNumber% / 6)) + 1) + str(%dp:zoneNumber% % 6)]]></commandFormat>
+					</command>
+				</commands>
+			</action>
+			<action indigoId="toggleZoneMuteStatus">
+				<params />
+				<commands>
+					<command>
+						<commandName>writeToTelnetConn</commandName>
+						<commandFormat><![CDATA[eval:"<" + str((int(%dp:zoneNumber% / 6)) + 1) + str(%dp:zoneNumber% % 6) + "MU01"]]></commandFormat>
+						<commandExecCondition>"%ds:isMuted%" == "False"</commandExecCondition>
+					</command>
+					<command>
+						<commandName>writeToTelnetConn</commandName>
+						<commandFormat><![CDATA[eval:"<" + str((int(%dp:zoneNumber% / 6)) + 1) + str(%dp:zoneNumber% % 6) + "MU00"]]></commandFormat>
+						<commandExecCondition>"%ds:isMuted%" == "True"</commandExecCondition>
+					</command>
+					<command>
+						<commandName>writeToTelnetConn</commandName>
+						<commandFormat><![CDATA[eval:"?" + str((int(%dp:zoneNumber% / 6)) + 1) + str(%dp:zoneNumber% % 6)]]></commandFormat>
+					</command>
+				</commands>
+			</action>
+			<action indigoId="setZoneTreble">
+				<params>
+					<param indigoId="trebleValue" paramType="ParamTypeInteger" isRequired="True">
+						<invalidValueMessage><![CDATA[Please enter the new treble level between 0 and 14.]]></invalidValueMessage>
+						<minValue>0</minValue>
+						<maxValue>14</maxValue>
+					</param>
+				</params>
+				<commands>
+					<command>
+						<commandName>writeToTelnetConn</commandName>
+						<commandFormat><![CDATA[eval:"<" + str((int(%dp:zoneNumber% / 6)) + 1) + str(%dp:zoneNumber% % 6) + "TR" + "%ap:trebleValue%".zfill(2)]]></commandFormat>
+					</command>
+					<command>
+						<commandName>writeToTelnetConn</commandName>
+						<commandFormat><![CDATA[eval:"?" + str((int(%dp:zoneNumber% / 6)) + 1) + str(%dp:zoneNumber% % 6)]]></commandFormat>
+					</command>
+				</commands>
+			</action>
+			<action indigoId="setZoneBass">
+				<params>
+					<param indigoId="bassValue" paramType="ParamTypeInteger" isRequired="True">
+						<invalidValueMessage><![CDATA[Please enter the new bass level between 0 and 14.]]></invalidValueMessage>
+						<minValue>0</minValue>
+						<maxValue>14</maxValue>
+					</param>
+				</params>
+				<commands>
+					<command>
+						<commandName>writeToTelnetConn</commandName>
+						<commandFormat><![CDATA[eval:"<" + str((int(%dp:zoneNumber% / 6)) + 1) + str(%dp:zoneNumber% % 6) + "BS" + "%ap:bassValue%".zfill(2)]]></commandFormat>
+					</command>
+					<command>
+						<commandName>writeToTelnetConn</commandName>
+						<commandFormat><![CDATA[eval:"?" + str((int(%dp:zoneNumber% / 6)) + 1) + str(%dp:zoneNumber% % 6)]]></commandFormat>
+					</command>
+				</commands>
+			</action>
+			<action indigoId="setZoneBalance">
+				<params>
+					<param indigoId="balanceValue" paramType="ParamTypeInteger" isRequired="True">
+						<invalidValueMessage><![CDATA[Please enter the new balanceValue level between 0 and 20.]]></invalidValueMessage>
+						<minValue>0</minValue>
+						<maxValue>20</maxValue>
+					</param>
+				</params>
+				<commands>
+					<command>
+						<commandName>writeToTelnetConn</commandName>
+						<commandFormat><![CDATA[eval:"<" + str((int(%dp:zoneNumber% / 6)) + 1) + str(%dp:zoneNumber% % 6) + "BL" + "%ap:balanceValue%".zfill(2)]]></commandFormat>
+					</command>
+					<command>
+						<commandName>writeToTelnetConn</commandName>
+						<commandFormat><![CDATA[eval:"?" + str((int(%dp:zoneNumber% / 6)) + 1) + str(%dp:zoneNumber% % 6)]]></commandFormat>
+					</command>
+				</commands>
+			</action>
+			
+			<!-- dimmer support actions -->
+			<action indigoId="TurnOn">
+				<commands>
+					<command>
+						<commandName>writeToTelnetConn</commandName>
+						<commandFormat><![CDATA[eval:"<" + str((int(%dp:zoneNumber% / 6)) + 1) + str(%dp:zoneNumber% % 6) + "PR01"]]></commandFormat>
+					</command>
+					<command>
+						<commandName>writeToTelnetConn</commandName>
+						<commandFormat><![CDATA[eval:"?" + str((int(%dp:zoneNumber% / 6)) + 1) + str(%dp:zoneNumber% % 6)]]></commandFormat>
+					</command>
+				</commands>
+			</action>
+			<action indigoId="TurnOff">
+				<commands>
+					<command>
+						<commandName>writeToTelnetConn</commandName>
+						<commandFormat><![CDATA[eval:"<" + str((int(%dp:zoneNumber% / 6)) + 1) + str(%dp:zoneNumber% % 6) + "PR00"]]></commandFormat>
+					</command>
+					<command>
+						<commandName>writeToTelnetConn</commandName>
+						<commandFormat><![CDATA[eval:"?" + str((int(%dp:zoneNumber% / 6)) + 1) + str(%dp:zoneNumber% % 6)]]></commandFormat>
+					</command>
+				</commands>
+			</action>
+			<action indigoId="Toggle">
+				<commands>
+					<command>
+						<commandName>writeToTelnetConn</commandName>
+						<commandFormat><![CDATA[eval:"<" + str((int(%dp:zoneNumber% / 6)) + 1) + str(%dp:zoneNumber% % 6) + "PR00"]]></commandFormat>
+						<commandExecCondition>"%ds:isPoweredOn%" == "True"</commandExecCondition>
+					</command>
+					<command>
+						<commandName>writeToTelnetConn</commandName>
+						<commandFormat><![CDATA[eval:"<" + str((int(%dp:zoneNumber% / 6)) + 1) + str(%dp:zoneNumber% % 6) + "PR01"]]></commandFormat>
+						<commandExecCondition>"%ds:isPoweredOn%" == "False"</commandExecCondition>
+					</command>
+					<command>
+						<commandName>writeToTelnetConn</commandName>
+						<commandFormat><![CDATA[eval:"?" + str((int(%dp:zoneNumber% / 6)) + 1) + str(%dp:zoneNumber% % 6)]]></commandFormat>
+					</command>
+				</commands>
+			</action>
+			<action indigoId="SetBrightness">
+				<params>
+					<param indigoId="actionValue" paramType="ParamTypeInteger" isRequired="True" />
+				</params>
+				<commands>
+					<command>
+						<commandName>writeToTelnetConn</commandName>
+						<commandFormat><![CDATA[eval:"<" + str((int(%dp:zoneNumber% / 6)) + 1) + str(%dp:zoneNumber% % 6) + "VO" + str(max(min(%ap:actionValue%, 38), 0)).zfill(2)]]></commandFormat>
+					</command>
+					<command>
+						<commandName>writeToTelnetConn</commandName>
+						<commandFormat><![CDATA[eval:"?" + str((int(%dp:zoneNumber% / 6)) + 1) + str(%dp:zoneNumber% % 6)]]></commandFormat>
+					</command>
+				</commands>
+			</action>
+			
+			
+			<!-- ARBITRARY COMMAND PROCESSING -->
+			<action indigoId="SendArbitraryCommand">
+				<commands>
+					<command>
+						<commandName>writeToTelnetConn</commandName>
+						<commandFormat>%ap:commandCode%</commandFormat>
+					</command>
+				</commands>
+				<params>
+					<param indigoId="commandCode" paramType="ParamTypeString" isRequired="True">
+						<invalidValueMessage><![CDATA[Please enter a command to send]]></invalidValueMessage>
+					</param>
+				</params>
+			</action>
+		</actions>
+	</pluginConfig>
+</RPFrameworkConfig>

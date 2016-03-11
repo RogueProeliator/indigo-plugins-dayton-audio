@@ -1,0 +1,168 @@
+<?xml version="1.0"?>
+<Devices>
+
+	<!-- this device represents the main Dayton Audio zone receiver that is controlling the -->
+	<!-- connected zones... only the MAIN receiver need be defined, not any slave -->
+	<!-- receivers as they are controlled by the main. This is the one with the serial -->
+	<!-- connection to the server -->
+	<Device type="custom" id="daytonAudioReceiver">
+		<Name>Dayton Audio Zone Receiver</Name>
+		<ConfigUI>	
+			<Field id="deviceCreationInstructions" type="label">
+				<Label>You need only create a device for the primary (master) receiver that is connected via serial to the Indigo server. Do not create a device for each slave as all communications must go through the master receiver.</Label>
+			</Field>
+			<Field type="label" id="commOptionsSpacer" fontSize="small">
+				<Label></Label>
+			</Field>
+			<Field id="commOptionsTitle" type="label" fontColor="darkGray">
+				<Label>COMMUNICATION OPTIONS</Label>
+			</Field>
+			<Field id="instructionSeparator2" type="separator" />
+			<Field id="serialPort" type="menu">
+				<Label>Serial port:</Label>
+				<List class="indigo.serialPorts" filter="indigo.ignoreBluetooth" />
+			</Field>
+			<Field id="zonePollInterval" type="textfield" defaultvalue="300">
+				<Label>Zone Poll Time (sec):</Label>
+			</Field>
+			<Field id="updateIntervalInstructions" type="label" fontSize="small" alignWithControl="true">
+				<Label>This interval, specified in seconds, determines how often the plugin attempts to read the status of all states of the audio zones; this is used to update the plugin whenever a manual change has occurred (such as a change by Dayton Audio keypads). Setting to 0 will disable status update polling.</Label>
+			</Field>
+			<Field type="menu" id="connectedSlaveUnits">
+				<Label>Connected Slave Units:</Label>
+				<List>
+					<Option value="0">0</Option>
+					<Option value="1">1</Option>
+					<Option value="2">2</Option>
+				</List>
+			</Field>
+			<Field type="label" id="sourceSeparator" fontSize="small">
+				<Label></Label>
+			</Field>
+			<Field id="sourceTitle" type="label" fontColor="darkGray">
+				<Label>SOURCE DEFINITIONS</Label>
+			</Field>
+			<Field id="sourceSeparator2" type="separator" />
+			<Field id="inputLabelInstructions" type="label" fontSize="small">
+				<Label>You may label the inputs so that actions and status may reference the input by label. Blank out a label if your receiver does not support that particular input or you do not wish to see it in lists (e.g. no source is plugged in to that input).</Label>
+			</Field>
+			<Field id="source1Label" type="textfield" defaultValue="Tuner">
+				<Label>Source 1 Name:</Label>
+			</Field>
+			<Field id="source2Label" type="textfield" defaultValue="Source 2">
+				<Label>Source 2 Name:</Label>
+			</Field>
+			<Field id="source3Label" type="textfield" defaultValue="Source 3">
+				<Label>Source 3 Name:</Label>
+			</Field>
+			<Field id="source4Label" type="textfield" defaultValue="Source 4">
+				<Label>Source 4 Name:</Label>
+			</Field>
+			<Field id="source5Label" type="textfield" defaultValue="Source 5">
+				<Label>Source 5 Name:</Label>
+			</Field>
+			<Field id="source6Label" type="textfield" defaultValue="Source 6">
+				<Label>Source 6 Name:</Label>
+			</Field>
+			<Field id="address" type="textfield" hidden='true' >
+				<Label/>
+			</Field>
+		</ConfigUI>
+		<UiDisplayStateId>connectionState</UiDisplayStateId>
+		<States>
+			<State id="isConnected">
+				<ValueType>Boolean</ValueType>
+				<TriggerLabel>Is Connected</TriggerLabel>
+				<ControlPageLabel>Is Connected</ControlPageLabel>
+			</State>
+			<State id="connectionState">
+				<ValueType>String</ValueType>
+				<TriggerLabel>Connection Status</TriggerLabel>
+				<ControlPageLabel>Connection Status</ControlPageLabel>
+			</State>
+		</States>
+	</Device>
+	
+	<!-- this device type represents a single zone that is attached to the Dayton Audio -->
+	<!-- receiver; it provides actions and triggers for states and control that is possible -->
+	<!-- against a single zone -->
+	<Device type="dimmer" id="daytonAudioZone">
+		<Name>Dayton Audio Receiver Zone</Name>
+		<ConfigUI>
+			<Field id="sourceReceiver" type="menu">
+				<Label>Connected Receiver:</Label>
+				<List class="indigo.devices" filter="self.daytonAudioReceiver" />
+			</Field>
+			<Field id="zoneNumber" type="menu">
+				<Label>Zone Number:</Label>
+				<List>
+					<Option value="1">1</Option>
+					<Option value="2">2</Option>
+					<Option value="3">3</Option>
+					<Option value="4">4</Option>
+					<Option value="5">5</Option>
+					<Option value="6">6</Option>
+					<Option value="7">7</Option>
+					<Option value="8">8</Option>
+					<Option value="9">9</Option>
+					<Option value="10">10</Option>
+					<Option value="11">11</Option>
+					<Option value="12">12</Option>
+					<Option value="13">13</Option>
+					<Option value="14">14</Option>
+					<Option value="15">15</Option>
+					<Option value="16">16</Option>
+					<Option value="17">17</Option>
+					<Option value="18">18</Option>
+				</List>
+			</Field>
+			<Field id="address" type="textfield" hidden='true' >
+				<Label/>
+			</Field>
+		</ConfigUI>
+		<UiDisplayStateId>isPoweredOn</UiDisplayStateId>
+		<States>
+			<State id="bassLevel">
+				<ValueType>Integer</ValueType>
+				<TriggerLabel>Bass Level</TriggerLabel>
+				<ControlPageLabel>Bass</ControlPageLabel>
+			</State>
+			<State id="isMuted">
+				<ValueType>Boolean</ValueType>
+				<TriggerLabel>Is Muted</TriggerLabel>
+				<ControlPageLabel>Muted</ControlPageLabel>
+			</State>
+			<State id="isPoweredOn">
+				<ValueType>Boolean</ValueType>
+				<TriggerLabel>Is Powered On</TriggerLabel>
+				<ControlPageLabel>Powered On</ControlPageLabel>
+			</State>
+			<State id="source">
+				<ValueType>Integer</ValueType>
+				<TriggerLabel>Source Number</TriggerLabel>
+				<ControlPageLabel>Source</ControlPageLabel>
+			</State>
+			<State id="trebleLevel">
+				<ValueType>Integer</ValueType>
+				<TriggerLabel>Treble Level</TriggerLabel>
+				<ControlPageLabel>Treble</ControlPageLabel>
+			</State>
+			<State id="bassLevel">
+				<ValueType>Integer</ValueType>
+				<TriggerLabel>Bass Level</TriggerLabel>
+				<ControlPageLabel>Bass</ControlPageLabel>
+			</State>
+			<State id="balanceStatus">
+				<ValueType>Integer</ValueType>
+				<TriggerLabel>Balance</TriggerLabel>
+				<ControlPageLabel>Balance</ControlPageLabel>
+			</State>
+			<State id="volume">
+				<ValueType>Integer</ValueType>
+				<TriggerLabel>Volume Level</TriggerLabel>
+				<ControlPageLabel>Volume</ControlPageLabel>
+			</State>
+		</States>
+	</Device>
+	
+</Devices>
