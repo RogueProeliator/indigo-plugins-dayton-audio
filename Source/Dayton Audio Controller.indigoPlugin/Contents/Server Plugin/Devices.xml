@@ -122,11 +122,6 @@
 		</ConfigUI>
 		<UiDisplayStateId>isPoweredOn</UiDisplayStateId>
 		<States>
-			<State id="bassLevel">
-				<ValueType>Integer</ValueType>
-				<TriggerLabel>Bass Level</TriggerLabel>
-				<ControlPageLabel>Bass</ControlPageLabel>
-			</State>
 			<State id="isMuted">
 				<ValueType>Boolean</ValueType>
 				<TriggerLabel>Is Muted</TriggerLabel>
