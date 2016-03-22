@@ -30,7 +30,16 @@ The plugin tracks several device states where are updated according to the polli
 - **balanceStatus** - The left-right balance selected for the zone (_0 - 20_)
 
 #Available Actions
-###Set Power (All Zones)
-This action will turn on/off all of the zones connected to a master receiver.
-###Set Source (All Zones)
-This action will set the input of all connected zones to the selected source.
+###Receiver Actions
+- **Set Power (All Zones)** - This action will turn on/off all of the zones connected to a master receiver.
+- **Set Source (All Zones)** - This action will set the input of all connected zones to the selected source.
+
+###Zone actions
+- **Set Zone Source** - Sets the input source for the zone
+- **Zone Volume - Set Value** - Set the volume of the zone to the provided Value
+- **Zone Volume - Adjust Up/Down** - This adjusts the volume from its current state up/down; note you will need to make sure the device is polling often enough if you have the keypads or IR remote in use
+- **Zone Mute - Set** - Explicitly sets the zone to either mute or not muted
+- **Zone Mute - Toggle** - Toggles the mute/unmuted status of the zone; note you will need to make sure the device is polling often enough if you have the keypads or IR remote in use
+- **Zone Treble - Set Value** - Sets the treble level for the zone
+- **Zone Bass - Set Value** - Sets the bass level for the zone
+- **Zone Balance - Set Value** - Sets the balance for the zone
