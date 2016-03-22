@@ -10,13 +10,16 @@ The latest released version is always available on the Releases tab and is the r
 
 ###Configuring the Plugin
 Upon first installation you will be asked to configure the plugin; please see the instructions on the configuration screen for more information. Most users will be fine with the defaults unless an email is desired when a new version is released.
+![](<Documentation/Help/PluginConfigurationScreen.png>)
 
 #Plugin Devices
 ###Master Receiver(s)
 You will need to create a new Dayton Audio Zone Receiver for each master receiver that you have connected to Indigo via serial connection; any slave units connected to the master will automatically be available for control (these show up as additional available zones in Indigo).
+![](<Documentation/Help/ReceiverDeviceConfigScreen.png>)
 
 ###Individual Zones
 After you have created the Indigo devices for your receiver, you will need to create an Indigo device for each zone attached to the receiver that you wish to monitor or control. These zone devices are where you will control the output of the receiver via actions and states.
+![](<Documentation/Help/ZoneDeviceConfigScreen.png>)
 
 #Available Device states
 The plugin tracks several device states where are updated according to the polling frequency of the master receiver. Note that after each action, the appropriate zone is updated immediately. The following zone states are supported:
