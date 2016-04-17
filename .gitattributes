@@ -1,4 +1,3 @@
 .gitattributes export-ignore
-*.bbprojectd export-ignore
 Documentation/ export-ignore
 README.md export-ignore
