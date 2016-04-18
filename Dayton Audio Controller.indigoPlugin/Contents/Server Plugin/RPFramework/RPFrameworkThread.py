@@ -6,9 +6,17 @@
 # 	Class for all RogueProeliator's device threads; supports cancellation via raising an
 #	exception in the thread
 #	
-#	Version 1.0.8 [5-2014]:
+#	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# 	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# 	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# 	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# 	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# 	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# 	SOFTWARE.
+#
+#	Version 8:
 #		Initial release of the thread to the framework
-#	Version 1.0.17:
+#	Version 17:
 #		Changed strings to unicode strings
 #
 #/////////////////////////////////////////////////////////////////////////////////////////

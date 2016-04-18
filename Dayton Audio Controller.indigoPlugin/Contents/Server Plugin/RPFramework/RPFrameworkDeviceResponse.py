@@ -5,16 +5,24 @@
 # RPFrameworkDeviceResponse by RogueProeliator <adam.d.ashe@gmail.com>
 # 	Class for all RogueProeliator's "incoming" responses such that they may be
 #	automatically processed by base classes
-#	
-#	Version 1.0.0 [10-18-2013]:
+#
+#	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# 	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# 	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# 	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# 	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# 	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# 	SOFTWARE.	
+#
+#	Version 0:
 #		Initial release of the device framework
-#	Version 1.0.6:
+#	Version 6:
 #		Added error catching surrounding effect execution; now outputs to log instead of
 #			crashing on error
-#	Version 1.0.17:
+#	Version 17:
 #		Added unicode support
 #		Change exception logging to new plugin-object based error logging
-#	Version 1.0.18:
+#	Version 18:
 #		Added support for updateExecCondition specification on response processing effects
 #
 #/////////////////////////////////////////////////////////////////////////////////////////

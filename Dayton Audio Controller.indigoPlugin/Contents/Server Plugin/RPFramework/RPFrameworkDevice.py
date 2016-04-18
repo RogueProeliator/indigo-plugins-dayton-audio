@@ -6,17 +6,25 @@
 # 	Base class for all RogueProeliator's devices created by plugins for Perceptive
 #	Automation's Indigo software.
 #	
-#	Version 1.0.0 [10-18-2013]:
+#	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# 	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# 	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# 	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# 	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# 	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# 	SOFTWARE.
+#
+#	Version 0:
 #		Initial release of the device framework
-#	Version 1.0.4:
+#	Version 4:
 #		Added support for child devices
-#	Version 1.0.8:
+#	Version 8:
 #		Added support for reconnection attempts via plugin's command queue
-#	Version 1.0.13:
+#	Version 13:
 #		Added ability to specify new device states that are added via upgrades; if any
 #		of these states don't exist at device started, the device states will be reloaded
 #		via a call to stateListOrDisplayStateIdChanged
-#	Version 1.0.17:
+#	Version 17:
 #		Added unicode support
 #		Changed error messages to the new plugin-based logErrorMessage
 #

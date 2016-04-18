@@ -7,7 +7,15 @@
 #	rather function to pass commands along to a parent device; examples would be zones indigo
 #	a multi-room audio system or zones in an alarm panel
 #	
-#	Version 1.0.4 [10-18-2013]:
+#	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# 	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# 	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# 	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# 	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# 	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# 	SOFTWARE.
+#
+#	Version 4:
 #		Initial release of the device in the framework
 #
 #/////////////////////////////////////////////////////////////////////////////////////////

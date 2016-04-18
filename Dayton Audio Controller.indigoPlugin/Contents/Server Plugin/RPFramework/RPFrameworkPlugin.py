@@ -6,45 +6,53 @@
 # 	Base class for all RogueProeliator's plugins for Perceptive Automation's Indigo
 #	home automation software.
 #	
-#	Version 1.0.0 [10-18-2013]:
+#	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# 	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# 	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# 	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# 	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# 	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# 	SOFTWARE.
+#
+#	Version 0 [10-18-2013]:
 #		Initial release of the plugin framework
-#	Version 1.0.1
+#	Version 1
 #		Fixed default value of debug in case missing in upgraded devices (default Medium)
-#	Version 1.0.2
+#	Version 2
 #		Added SOAP operations to the RESTfulDevice className
 #		Better set default value for the debug level (in plugin.py)
-#	Version 1.0.3 [11-18-2013]:
+#	Version 3 [11-18-2013]:
 #		Added Wake-On-LAN module for network devices
 #		Added functions to aid in finding/selection uPNP devices
 #		Added plugin config update when device dialog closes
-#	Version 1.0.4:
+#	Version 4:
 #		Added support for child devices
 #		Added support for execute conditions on action commands
-#	Version 1.0.5:
+#	Version 5:
 #		Swapped deviceStartComm order to assign managed device to array prior to
 #			initiating communications
-#	Version 1.0.7:
+#	Version 7:
 #		Changed substitute to support plugin preferences with a "pp" prefix
 #		Added database support
 #		Added plugin-level guiConfiguration settings, used with GUI_CONFIG_PLUGINSETTINGS
-#	Version 1.0.8 [5/2014]:
+#	Version 8 [5/2014]:
 #		Added Plugin Config UI parameter validation
 #		Added plugin-level command queue processing; moved update check to here
-#	Version 1.0.9:
+#	Version 9:
 #		Added ability to handle unknown commands for the plugin "downstream"
-#	Version 1.0.10:
+#	Version 10:
 #		Added parameter to plugin commands that allow re-queuing additional commands for
 #		non-immediate execution
-#	Version 1.0.11:
+#	Version 11:
 #		Added callback functions to support dimmer-based devices (passes action call to the
 #		device like a normal action callback
-#	Version 1.0.12:
+#	Version 12:
 #		Added support for shorter wait times in devices after a queued command executes
 #		Added support for uiValue when updating states from effect processing
-#	Version 1.0.13:
+#	Version 13:
 #		Added support for substituting Indigo List type property values (into string as action
 #		comma-delimited string)
-#	Version 1.0.14:
+#	Version 14:
 #		Switched init routine to complete RPFramework init prior to base class init
 #		Added template-replace of MenuItems.xml for standard features
 #		Added option to install UPnP debug tools to menu items
@@ -52,21 +60,21 @@
 #		Added writePluginReport for writing out standard reports
 #		Added trigger processing to the base plugin
 #		Removed initial version check on startup - let the concurrent thread do that!
-#	Version 1.0.15:
+#	Version 15:
 #		Added the parameter type ParamTypeOSFilePath to validate an existing filename
-#	Version 1.0.16:
+#	Version 16:
 #		Fixed error when an action failed to validate (when executed through script)
 #		Updated telnet devices to set the error state on the server when timing out / failed connection
-#	Version 1.0.17:
+#	Version 17:
 #		Added unicode support
 #		Added support for device parent properties during substitution
 #		Added "requests" module to framework from source on GitHub
 #		Added ability to dump device details to event log as part of the DEBUG menu items
 #		Added logErrorMessage function to log friendly error messages and details for debug
 #		Changed error messages to use the new logErrorMessage function
-#	Version 1.0.18:
+#	Version 18:
 #		Added ability to specify updateExecCondition on effects within response nodes
-#	Version 1.0.19:
+#	Version 19:
 #		Changed call to determine RPFrameworkConfig.xml file to use the os.getcwd() call
 #	Version 20:
 #		Changed updater to use the GitHub updater method
@@ -512,6 +520,9 @@ class RPFrameworkPlugin(indigo.PluginBase):
 												<Field id="versionCheckUpdateErrorMsg" type="label" alignWithControl="true" fontColor="red" visibleBindingId="versionCheckResults" visibleBindingValue="3">
 													<Label>An error was encountered while checking your plugin version. Please try again later.</Label>
 												</Field>
+												<Field id="updateInProgressMsg" type="label" alignWithControl="true" fontColor="blue" visibleBindingId="versionCheckResults" visibleBindingValue="4">
+													<Label>Your download has been initiated; you will get the standard Indigo dialog confirming the plugin update on the server once it is ready.</Label>
+												</Field>
 											</ConfigUI>
 										</MenuItem>"""
 			fileXml = fileXml.replace(u'</MenuItems>', updateCheckOptions + u'</MenuItems>')
@@ -708,6 +719,10 @@ class RPFrameworkPlugin(indigo.PluginBase):
 					elif command.commandName == RPFrameworkCommand.CMD_DEBUG_LOGUPNPDEVICES:
 						# kick off the UPnP discovery and logging now
 						self.logUPnPDevicesFoundProcessing()
+						
+					elif command.commandName == RPFrameworkCommand.CMD_DOWNLOAD_UPDATE:
+						# process a request to download the latest version
+						self.updateChecker.update()
 					
 					else:
 						# allow a base class to process the command
@@ -1058,13 +1073,15 @@ class RPFrameworkPlugin(indigo.PluginBase):
 	# GitHub updater
 	#-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 	def initiateUpdateDownload(self, valuesDict, menuId):
-		self.updateChecker.update()
+		self.pluginCommandQueue.put(RPFrameworkCommand.RPFrameworkCommand(RPFrameworkCommand.CMD_DOWNLOAD_UPDATE, commandPayload=None))
+		valuesDict[u'versionCheckResults'] = u'4'
+		return valuesDict
 		
 	#-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 	# This routine will launch the help URL in a new browser window
 	#-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 	def launchForumURL(self, valuesDict, menuId):
-		supportUrl = emptyQueueProcessingThreadSleepTime = self.getGUIConfigValue(GUI_CONFIG_PLUGINSETTINGS, GUI_CONFIG_PLUGIN_UPDATEDOWNLOADURL, u'http://forums.indigodomo.com/viewforum.php?f=59')
+		supportUrl = self.getGUIConfigValue(GUI_CONFIG_PLUGINSETTINGS, GUI_CONFIG_PLUGIN_UPDATEDOWNLOADURL, u'http://forums.indigodomo.com/viewforum.php?f=59')
 		self.browserOpen(supportUrl)
 		
 		

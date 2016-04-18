@@ -6,30 +6,38 @@
 # 	This class is a concrete implementation of the RPFrameworkDevice as a device which
 #	communicates via a REST style HTTP connection.
 #	
-#	Version 1.0.0 [10-18-2013]:
+#	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# 	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# 	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# 	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# 	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# 	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# 	SOFTWARE.
+#
+#	Version 0:
 #		Initial release of the device framework
-#	Version 1.0.5 [1-10-2014]:
+#	Version 5:
 #		Added GET operation command processing to the PUT command processing
 #		Added status polling (as found in the Telnet device) to the RESTFul device
 #		Added better reading of GET operation values (was read twice before)
-#	Version 1.0.7:
+#	Version 7:
 #		Added short error message w/ trace only if debug is on for GET/PUT/SOAP
 #		Added support for device database
 #		Added overridable error handling function
-#	Version 1.0.8 [5/2014]:
+#	Version 8:
 #		Removed update check as it is now at the plugin level
-#	Version 1.0.10:
+#	Version 10:
 #		Added the DOWNLOAD_FILE command to save a file to disc from network (HTTP)
-#	Version 1.0.12:
+#	Version 12:
 #		Added a shortened wait period after a command queue has recently emptied
-#	Version 1.0.14:
+#	Version 14:
 #		Added custom header overridable function
 #		Added JSON command
 #		Changed handleDeviceResponse to get 3 arguments (reponse obj, text, command)
 #		Fixed bug with the download file command when no authentication is enabled
-#	Version 1.0.15:
+#	Version 15:
 #		Fixed bug with download file when issue occurs (null reference exception)
-#	Version 1.0.17:
+#	Version 17:
 #		Added unicode support
 #		Changed the GET operation to use requests
 #		Changed the DOWNLOADFILE/DOWNLOADIMAGE operations to use requests

@@ -6,14 +6,22 @@
 # 	This class defines an action available to the user/processed by the plugin in a
 #	standard manner such that the base classes in the framework are able to process many
 #	actions automatically w/o custom writing them for each plugin.
-#	
-#	Version 1.0.0 [10-18-2013]:
+#
+#	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# 	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# 	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# 	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# 	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# 	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# 	SOFTWARE.	
+#
+#	Version 0:
 #		Initial release of the plugin framework
-#	Version 1.0.4:
+#	Version 4:
 #		Added support for the executeCondition parameter on the commands to execute
-#	Version 1.0.16:
+#	Version 16:
 #		Fixed typo which causes an error when validation fails for an action
-#	Version 1.0.17:
+#	Version 17:
 #		Added unicode support
 #
 #/////////////////////////////////////////////////////////////////////////////////////////

@@ -6,22 +6,30 @@
 # 	This class is a concrete implementation of the RPFrameworkDevice as a device which
 #	communicates via a telnet session
 #	
-#	Version 1.0.0 [10-18-2013]:
+#	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# 	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# 	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# 	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# 	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# 	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# 	SOFTWARE.
+#
+#	Version 0:
 #		Initial release of the device framework
-#	Version 1.0.4:
+#	Version 4:
 #		Added ability to connect to serial ports... contains breaking changes!
-#	Version 1.0.8:
+#	Version 8:
 #		Added ability to connect to sockets directly
 #		Removed plugin version check (moved to plugin level command queue)
-#	Version 1.0.14:
+#	Version 14:
 #		Changed the serial connection readline to support Python v2.6
-#	Version 1.0.16:
+#	Version 16:
 #		Set error state on server when a connection times out or fails
-#	Version 1.0.17:
+#	Version 17:
 #		Added unicode support
 #		Changed exception logging to use the logErrorMessage routine
 #		Added ability to specify 0 as the polling interval (<= 0 turns off polling)
-#	Version 1.0.18:
+#	Version 18:
 #		Changed error trapping to include EOFError as a re-connectable error
 #
 #/////////////////////////////////////////////////////////////////////////////////////////

@@ -7,14 +7,23 @@
 #	device configuration, plugin configuration, etc. It is used so that the base classes
 #	may automatically handle parameter functions (such as validation) that normally would
 #	have to be written into each plugin
+#
+#	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# 	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# 	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# 	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# 	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# 	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# 	SOFTWARE.
 #	
-#	Version 1.0.0 [10-18-2013]:
+#
+#	Version 0:
 #		Initial release of the plugin framework
-#	Version 1.0.8 [4-23-2014]:
+#	Version 8:
 #		Added the list parameter type
-#	Version 1.0.15 [3-30-2015]:
+#	Version 15:
 #		Added the ParamTypeOSFilePath parameter type
-#	Version 1.0.17:
+#	Version 17:
 #		Added unicode support
 #		Fixed issue on line 119 for boolean params
 #
