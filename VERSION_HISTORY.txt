@@ -3,8 +3,11 @@ https://github.com/RogueProeliator/IndigoPlugins-DaytonAudio
 
 To update to the latest version of the application, please download the latest release available at https://github.com/RogueProeliator/IndigoPlugins-DaytonAudio/releases or via the Check For Updates menu option if you already have a version installed.
 
+=================================
 VERSION HISTORY
----------------
+=================================
+v1.0.2 [April 2016]
+Added code to lower the logging level of the Requests library (necessary due to a change in Indigo)
 
-v1.0.1
+v1.0.1 [April 2016]
 Initial public release of the plugin supporting full control of the DAX66 6-Source / 6-Zone Distributed Audio System.

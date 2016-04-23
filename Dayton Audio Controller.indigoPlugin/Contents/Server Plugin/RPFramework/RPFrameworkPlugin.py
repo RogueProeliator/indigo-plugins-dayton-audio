@@ -78,6 +78,7 @@
 #		Changed call to determine RPFrameworkConfig.xml file to use the os.getcwd() call
 #	Version 20:
 #		Changed updater to use the GitHub updater method
+#		Updated init routine to lower logging level of requests library
 #
 #/////////////////////////////////////////////////////////////////////////////////////////
 #/////////////////////////////////////////////////////////////////////////////////////////
@@ -88,6 +89,7 @@
 import indigo
 import os
 import re
+import requests
 import RPFrameworkCommand
 from RPFrameworkIndigoAction import RPFrameworkIndigoActionDfn
 import RPFrameworkDeviceResponse 
@@ -103,6 +105,8 @@ import xml.etree.ElementTree
 import threading
 import RPFrameworkUtils
 from RPFrameworkUpdater import GitHubPluginUpdater
+import ConfigParser
+import logging
 
 #/////////////////////////////////////////////////////////////////////////////////////////
 # Constants and configuration variables
@@ -219,6 +223,11 @@ class RPFrameworkPlugin(indigo.PluginBase):
 		indigo.PluginBase.__init__(self, pluginId, pluginDisplayName, pluginVersion, pluginPrefs)
 		self.pluginIsInitializing = False
 		self.debug = pluginPrefs.get(u'showDebugInfo', False)
+		
+		# reduce the logging level of the requests library so it doesn't flood the Indigo Log
+		# with unnecessary information
+		logging.getLogger("requests").setLevel(logging.WARNING)
+		logging.getLogger("urllib3").setLevel(logging.WARNING)
 	
 	
 	#-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
@@ -842,12 +851,22 @@ class RPFrameworkPlugin(indigo.PluginBase):
 				self.logDebugMessage(u'Version notification already emailed to the user about this version', DEBUGLEVEL_HIGH)
 				return True
 
-			# parse the rest of the file for the email subject & body information
+			# build the email subject and body for sending to the user
 			try:
-				pass
-				#indigo.server.sendEmailTo(emailAddress, subject=emailSubject, body=emailBody)
+				gitHubConfig = ConfigParser.RawConfigParser()
+				gitHubConfig.read('UpdaterConfig.cfg')
+				repositoryName = gitHubConfig.get('repository', 'name')
+				emailSubject = gitHubConfig.get('update-email', 'subject')				
+				versionHistory = requests.get('https://raw.githubusercontent.com/RogueProeliator/' + repositoryName + '/master/VERSION_HISTORY.txt')
+
+				# Save this version as the last one emailed in the prefs
+				self.pluginPrefs[u'updaterLastVersionEmailed'] = self.updateChecker.latestReleaseFound
+
+				indigo.server.sendEmailTo(emailAddress, subject=emailSubject, body=versionHistory.text)
 			except:
-				indigo.server.log(u'Updater Error: Error parsing the email portion of the server''s verson file.', isError=True)
+				indigo.server.log(u'Updater Error: Error sending update notification.', isError=True)
+				if self.debug:
+					self.exceptionLog()
 				
 			# return true in order to indicate to any caller that an update
 			# was found/processed
