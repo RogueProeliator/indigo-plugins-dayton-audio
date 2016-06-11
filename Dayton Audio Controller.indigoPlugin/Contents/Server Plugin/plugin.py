@@ -9,6 +9,11 @@
 #	Command structure based on Dayton Audio's published specification found in the DAX66
 #	instruction manual
 #
+#	This plugin is released under an MIT license - this is a very simple and permissive
+#	license and may be found in the LICENSE.txt file found in the root of this plugin's
+#	GitHub repository:
+#		https://github.com/RogueProeliator/IndigoPlugins-DaytonAudio
+#
 #	Version 1.0:
 #		* Initial release of the plugin to Indigo users
 #
