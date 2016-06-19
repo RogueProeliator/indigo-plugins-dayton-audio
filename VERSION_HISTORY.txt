@@ -6,7 +6,7 @@ To update to the latest version of the application, please download the latest r
 =================================
 VERSION HISTORY
 =================================
-v1.0.3 [April 2016]
+v1.0.3 [June 2016]
 * Fixed bug in the power on/off display of zones
 * Changed zone display and slider operation to be a scaled volume (0-100 translates to 0-38 on the device). You may still set/read the raw volume value with the volume state and actions
 
