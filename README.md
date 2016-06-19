@@ -31,6 +31,8 @@ The plugin tracks several device states where are updated according to the polli
 - **bassLevel** - The level of bass selected for the zone (_0 - 14_)
 - **trebleLevel** - The level of treble selected for the zone (_0 - 14_)
 - **balanceStatus** - The left-right balance selected for the zone (_0 - 20_)
+- **brightnessLevel** - This is the value / display value of the dimmer control; it will show and set a volume level appropriately scaled to the device
+- **onOffState** - The default status state of the dimmer, this will mimic the isPoweredOn state for visibility within Indigo interfaces
 
 #Available Actions
 ###Receiver Actions

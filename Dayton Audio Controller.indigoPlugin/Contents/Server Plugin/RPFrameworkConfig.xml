@@ -283,7 +283,7 @@
 				<commands>
 					<command>
 						<commandName>writeToTelnetConn</commandName>
-						<commandFormat><![CDATA[eval:"<" + str((int(%dp:zoneNumber% / 6)) + 1) + str(%dp:zoneNumber% % 6) + "VO" + str(max(min(%ap:actionValue%, 38), 0)).zfill(2)]]></commandFormat>
+						<commandFormat><![CDATA[eval:"<" + str((int(%dp:zoneNumber% / 6)) + 1) + str(%dp:zoneNumber% % 6) + "VO" + str(max(min(int(%ap:actionValue% * 0.38), 38), 0)).zfill(2)]]></commandFormat>
 					</command>
 					<command>
 						<commandName>writeToTelnetConn</commandName>
