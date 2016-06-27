@@ -93,11 +93,11 @@
 				<commands>
 					<command>
 						<commandName>writeToTelnetConn</commandName>
-						<commandFormat><![CDATA[eval:"<" + str((int(%dp:zoneNumber% / 6)) + 1) + str(%dp:zoneNumber% % 6) + "CH0" + "%ap:zoneSource%"]]></commandFormat>
+						<commandFormat><![CDATA[eval:"<" +  str((int((%dp:zoneNumber% - 1) / 6)) + 1) + str(((%dp:zoneNumber% - 1) % 6) + 1) + "CH0" + "%ap:zoneSource%"]]></commandFormat>
 					</command>
 					<command>
 						<commandName>writeToTelnetConn</commandName>
-						<commandFormat><![CDATA[eval:"?" + str((int(%dp:zoneNumber% / 6)) + 1) + str(%dp:zoneNumber% % 6)]]></commandFormat>
+						<commandFormat><![CDATA[eval:"?" +  str((int((%dp:zoneNumber% - 1) / 6)) + 1) + str(((%dp:zoneNumber% - 1) % 6) + 1)]]></commandFormat>
 					</command>
 				</commands>
 			</action>
@@ -112,11 +112,11 @@
 				<commands>
 					<command>
 						<commandName>writeToTelnetConn</commandName>
-						<commandFormat><![CDATA[eval:"<" + str((int(%dp:zoneNumber% / 6)) + 1) + str(%dp:zoneNumber% % 6) + "VO" + "%ap:volumeTarget%".zfill(2)]]></commandFormat>
+						<commandFormat><![CDATA[eval:"<" +  str((int((%dp:zoneNumber% - 1) / 6)) + 1) + str(((%dp:zoneNumber% - 1) % 6) + 1) + "VO" + "%ap:volumeTarget%".zfill(2)]]></commandFormat>
 					</command>
 					<command>
 						<commandName>writeToTelnetConn</commandName>
-						<commandFormat><![CDATA[eval:"?" + str((int(%dp:zoneNumber% / 6)) + 1) + str(%dp:zoneNumber% % 6)]]></commandFormat>
+						<commandFormat><![CDATA[eval:"?" +  str((int((%dp:zoneNumber% - 1) / 6)) + 1) + str(((%dp:zoneNumber% - 1) % 6) + 1)]]></commandFormat>
 					</command>
 				</commands>
 			</action>
@@ -131,11 +131,11 @@
 				<commands>
 					<command>
 						<commandName>writeToTelnetConn</commandName>
-						<commandFormat><![CDATA[eval:"<" + str((int(%dp:zoneNumber% / 6)) + 1) + str(%dp:zoneNumber% % 6) + "VO" + str(max(min(%ds:volume% + %ap:volumeAdjustment%, 38), 0)).zfill(2)]]></commandFormat>
+						<commandFormat><![CDATA[eval:"<" +  str((int((%dp:zoneNumber% - 1) / 6)) + 1) + str(((%dp:zoneNumber% - 1) % 6) + 1) + "VO" + str(max(min(%ds:volume% + %ap:volumeAdjustment%, 38), 0)).zfill(2)]]></commandFormat>
 					</command>
 					<command>
 						<commandName>writeToTelnetConn</commandName>
-						<commandFormat><![CDATA[eval:"?" + str((int(%dp:zoneNumber% / 6)) + 1) + str(%dp:zoneNumber% % 6)]]></commandFormat>
+						<commandFormat><![CDATA[eval:"?" +  str((int((%dp:zoneNumber% - 1) / 6)) + 1) + str(((%dp:zoneNumber% - 1) % 6) + 1)]]></commandFormat>
 					</command>
 				</commands>
 			</action>
@@ -148,11 +148,11 @@
 				<commands>
 					<command>
 						<commandName>writeToTelnetConn</commandName>
-						<commandFormat><![CDATA[eval:"<" + str((int(%dp:zoneNumber% / 6)) + 1) + str(%dp:zoneNumber% % 6) + "MU" + "%ap:muteState%"]]></commandFormat>
+						<commandFormat><![CDATA[eval:"<" +  str((int((%dp:zoneNumber% - 1) / 6)) + 1) + str(((%dp:zoneNumber% - 1) % 6) + 1) + "MU" + "%ap:muteState%"]]></commandFormat>
 					</command>
 					<command>
 						<commandName>writeToTelnetConn</commandName>
-						<commandFormat><![CDATA[eval:"?" + str((int(%dp:zoneNumber% / 6)) + 1) + str(%dp:zoneNumber% % 6)]]></commandFormat>
+						<commandFormat><![CDATA[eval:"?" +  str((int((%dp:zoneNumber% - 1) / 6)) + 1) + str(((%dp:zoneNumber% - 1) % 6) + 1)]]></commandFormat>
 					</command>
 				</commands>
 			</action>
@@ -161,17 +161,17 @@
 				<commands>
 					<command>
 						<commandName>writeToTelnetConn</commandName>
-						<commandFormat><![CDATA[eval:"<" + str((int(%dp:zoneNumber% / 6)) + 1) + str(%dp:zoneNumber% % 6) + "MU01"]]></commandFormat>
+						<commandFormat><![CDATA[eval:"<" +  str((int((%dp:zoneNumber% - 1) / 6)) + 1) + str(((%dp:zoneNumber% - 1) % 6) + 1) + "MU01"]]></commandFormat>
 						<commandExecCondition>"%ds:isMuted%" == "False"</commandExecCondition>
 					</command>
 					<command>
 						<commandName>writeToTelnetConn</commandName>
-						<commandFormat><![CDATA[eval:"<" + str((int(%dp:zoneNumber% / 6)) + 1) + str(%dp:zoneNumber% % 6) + "MU00"]]></commandFormat>
+						<commandFormat><![CDATA[eval:"<" +  str((int((%dp:zoneNumber% - 1) / 6)) + 1) + str(((%dp:zoneNumber% - 1) % 6) + 1) + "MU00"]]></commandFormat>
 						<commandExecCondition>"%ds:isMuted%" == "True"</commandExecCondition>
 					</command>
 					<command>
 						<commandName>writeToTelnetConn</commandName>
-						<commandFormat><![CDATA[eval:"?" + str((int(%dp:zoneNumber% / 6)) + 1) + str(%dp:zoneNumber% % 6)]]></commandFormat>
+						<commandFormat><![CDATA[eval:"?" +  str((int((%dp:zoneNumber% - 1) / 6)) + 1) + str(((%dp:zoneNumber% - 1) % 6) + 1)]]></commandFormat>
 					</command>
 				</commands>
 			</action>
@@ -186,11 +186,11 @@
 				<commands>
 					<command>
 						<commandName>writeToTelnetConn</commandName>
-						<commandFormat><![CDATA[eval:"<" + str((int(%dp:zoneNumber% / 6)) + 1) + str(%dp:zoneNumber% % 6) + "TR" + "%ap:trebleValue%".zfill(2)]]></commandFormat>
+						<commandFormat><![CDATA[eval:"<" +  str((int((%dp:zoneNumber% - 1) / 6)) + 1) + str(((%dp:zoneNumber% - 1) % 6) + 1) + "TR" + "%ap:trebleValue%".zfill(2)]]></commandFormat>
 					</command>
 					<command>
 						<commandName>writeToTelnetConn</commandName>
-						<commandFormat><![CDATA[eval:"?" + str((int(%dp:zoneNumber% / 6)) + 1) + str(%dp:zoneNumber% % 6)]]></commandFormat>
+						<commandFormat><![CDATA[eval:"?" +  str((int((%dp:zoneNumber% - 1) / 6)) + 1) + str(((%dp:zoneNumber% - 1) % 6) + 1)]]></commandFormat>
 					</command>
 				</commands>
 			</action>
@@ -205,11 +205,11 @@
 				<commands>
 					<command>
 						<commandName>writeToTelnetConn</commandName>
-						<commandFormat><![CDATA[eval:"<" + str((int(%dp:zoneNumber% / 6)) + 1) + str(%dp:zoneNumber% % 6) + "BS" + "%ap:bassValue%".zfill(2)]]></commandFormat>
+						<commandFormat><![CDATA[eval:"<" +  str((int((%dp:zoneNumber% - 1) / 6)) + 1) + str(((%dp:zoneNumber% - 1) % 6) + 1) + "BS" + "%ap:bassValue%".zfill(2)]]></commandFormat>
 					</command>
 					<command>
 						<commandName>writeToTelnetConn</commandName>
-						<commandFormat><![CDATA[eval:"?" + str((int(%dp:zoneNumber% / 6)) + 1) + str(%dp:zoneNumber% % 6)]]></commandFormat>
+						<commandFormat><![CDATA[eval:"?" +  str((int((%dp:zoneNumber% - 1) / 6)) + 1) + str(((%dp:zoneNumber% - 1) % 6) + 1)]]></commandFormat>
 					</command>
 				</commands>
 			</action>
@@ -224,11 +224,11 @@
 				<commands>
 					<command>
 						<commandName>writeToTelnetConn</commandName>
-						<commandFormat><![CDATA[eval:"<" + str((int(%dp:zoneNumber% / 6)) + 1) + str(%dp:zoneNumber% % 6) + "BL" + "%ap:balanceValue%".zfill(2)]]></commandFormat>
+						<commandFormat><![CDATA[eval:"<" +  str((int((%dp:zoneNumber% - 1) / 6)) + 1) + str(((%dp:zoneNumber% - 1) % 6) + 1) + "BL" + "%ap:balanceValue%".zfill(2)]]></commandFormat>
 					</command>
 					<command>
 						<commandName>writeToTelnetConn</commandName>
-						<commandFormat><![CDATA[eval:"?" + str((int(%dp:zoneNumber% / 6)) + 1) + str(%dp:zoneNumber% % 6)]]></commandFormat>
+						<commandFormat><![CDATA[eval:"?" +  str((int((%dp:zoneNumber% - 1) / 6)) + 1) + str(((%dp:zoneNumber% - 1) % 6) + 1)]]></commandFormat>
 					</command>
 				</commands>
 			</action>
@@ -238,11 +238,11 @@
 				<commands>
 					<command>
 						<commandName>writeToTelnetConn</commandName>
-						<commandFormat><![CDATA[eval:"<" + str((int(%dp:zoneNumber% / 6)) + 1) + str(%dp:zoneNumber% % 6) + "PR01"]]></commandFormat>
+						<commandFormat><![CDATA[eval:"<" +  str((int((%dp:zoneNumber% - 1) / 6)) + 1) + str(((%dp:zoneNumber% - 1) % 6) + 1) + "PR01"]]></commandFormat>
 					</command>
 					<command>
 						<commandName>writeToTelnetConn</commandName>
-						<commandFormat><![CDATA[eval:"?" + str((int(%dp:zoneNumber% / 6)) + 1) + str(%dp:zoneNumber% % 6)]]></commandFormat>
+						<commandFormat><![CDATA[eval:"?" +  str((int((%dp:zoneNumber% - 1) / 6)) + 1) + str(((%dp:zoneNumber% - 1) % 6) + 1)]]></commandFormat>
 					</command>
 				</commands>
 			</action>
@@ -250,11 +250,11 @@
 				<commands>
 					<command>
 						<commandName>writeToTelnetConn</commandName>
-						<commandFormat><![CDATA[eval:"<" + str((int(%dp:zoneNumber% / 6)) + 1) + str(%dp:zoneNumber% % 6) + "PR00"]]></commandFormat>
+						<commandFormat><![CDATA[eval:"<" +  str((int((%dp:zoneNumber% - 1) / 6)) + 1) + str(((%dp:zoneNumber% - 1) % 6) + 1) + "PR00"]]></commandFormat>
 					</command>
 					<command>
 						<commandName>writeToTelnetConn</commandName>
-						<commandFormat><![CDATA[eval:"?" + str((int(%dp:zoneNumber% / 6)) + 1) + str(%dp:zoneNumber% % 6)]]></commandFormat>
+						<commandFormat><![CDATA[eval:"?" +  str((int((%dp:zoneNumber% - 1) / 6)) + 1) + str(((%dp:zoneNumber% - 1) % 6) + 1)]]></commandFormat>
 					</command>
 				</commands>
 			</action>
@@ -262,17 +262,17 @@
 				<commands>
 					<command>
 						<commandName>writeToTelnetConn</commandName>
-						<commandFormat><![CDATA[eval:"<" + str((int(%dp:zoneNumber% / 6)) + 1) + str(%dp:zoneNumber% % 6) + "PR00"]]></commandFormat>
+						<commandFormat><![CDATA[eval:"<" +  str((int((%dp:zoneNumber% - 1) / 6)) + 1) + str(((%dp:zoneNumber% - 1) % 6) + 1) + "PR00"]]></commandFormat>
 						<commandExecCondition>"%ds:isPoweredOn%" == "True"</commandExecCondition>
 					</command>
 					<command>
 						<commandName>writeToTelnetConn</commandName>
-						<commandFormat><![CDATA[eval:"<" + str((int(%dp:zoneNumber% / 6)) + 1) + str(%dp:zoneNumber% % 6) + "PR01"]]></commandFormat>
+						<commandFormat><![CDATA[eval:"<" +  str((int((%dp:zoneNumber% - 1) / 6)) + 1) + str(((%dp:zoneNumber% - 1) % 6) + 1) + "PR01"]]></commandFormat>
 						<commandExecCondition>"%ds:isPoweredOn%" == "False"</commandExecCondition>
 					</command>
 					<command>
 						<commandName>writeToTelnetConn</commandName>
-						<commandFormat><![CDATA[eval:"?" + str((int(%dp:zoneNumber% / 6)) + 1) + str(%dp:zoneNumber% % 6)]]></commandFormat>
+						<commandFormat><![CDATA[eval:"?" +  str((int((%dp:zoneNumber% - 1) / 6)) + 1) + str(((%dp:zoneNumber% - 1) % 6) + 1)]]></commandFormat>
 					</command>
 				</commands>
 			</action>
@@ -283,11 +283,11 @@
 				<commands>
 					<command>
 						<commandName>writeToTelnetConn</commandName>
-						<commandFormat><![CDATA[eval:"<" + str((int(%dp:zoneNumber% / 6)) + 1) + str(%dp:zoneNumber% % 6) + "VO" + str(max(min(int(%ap:actionValue% * 0.38), 38), 0)).zfill(2)]]></commandFormat>
+						<commandFormat><![CDATA[eval:"<" +  str((int((%dp:zoneNumber% - 1) / 6)) + 1) + str(((%dp:zoneNumber% - 1) % 6) + 1) + "VO" + str(max(min(int(%ap:actionValue% * 0.38), 38), 0)).zfill(2)]]></commandFormat>
 					</command>
 					<command>
 						<commandName>writeToTelnetConn</commandName>
-						<commandFormat><![CDATA[eval:"?" + str((int(%dp:zoneNumber% / 6)) + 1) + str(%dp:zoneNumber% % 6)]]></commandFormat>
+						<commandFormat><![CDATA[eval:"?" +  str((int((%dp:zoneNumber% - 1) / 6)) + 1) + str(((%dp:zoneNumber% - 1) % 6) + 1)]]></commandFormat>
 					</command>
 				</commands>
 			</action>
