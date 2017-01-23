@@ -26,6 +26,19 @@
 		</ConfigUI>
 		<CallbackMethod>executeAction</CallbackMethod>
 	</Action>
+	<Action id="changeMute" deviceFilter="self.daytonAudioReceiver">
+		<Name>Set Mute (All Zones)</Name>
+		<ConfigUI>
+			<Field type="menu" id="muteState">
+				<Label>Set All:</Label>
+				<List>
+					<Option value="00">Un-muted</Option>
+					<Option value="01">Muted</Option>
+				</List>
+			</Field>
+		</ConfigUI>
+		<CallbackMethod>executeAction</CallbackMethod>
+	</Action>
 	<Action id="sep01" />
 	
 	

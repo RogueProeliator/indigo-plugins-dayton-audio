@@ -77,6 +77,28 @@ class DaytonAudioReceiverDevice(RPFramework.RPFrameworkTelnetDevice.RPFrameworkT
 				
 
 	#/////////////////////////////////////////////////////////////////////////////////////
+	# Validation and GUI functions
+	#/////////////////////////////////////////////////////////////////////////////////////
+	#-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+	# This routine is called to retrieve a dynamic list of elements for an action (or
+	# other ConfigUI based) routine
+	#-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+	def getConfigDialogMenuItems(self, filter, valuesDict, typeId, targetId):
+		# we need the parent (receiver) device in order to get the list of
+		# available sources...
+		#parentReceiver = self.hostPlugin.managedDevices[int(self.indigoDevice.pluginProps["sourceReceiver"])]
+		
+		# List of available sources
+		sourceOptions = []
+		for x in range(1,7):
+			sourcePropName = u'source' + RPFramework.RPFrameworkUtils.to_unicode(x) + u'Label'
+			if self.indigoDevice.pluginProps[sourcePropName] != "":
+				sourceOptions.append((RPFramework.RPFrameworkUtils.to_unicode(x), u'Source ' + RPFramework.RPFrameworkUtils.to_unicode(x) + u': ' + self.indigoDevice.pluginProps[sourcePropName]))
+			
+		return sourceOptions
+		
+
+	#/////////////////////////////////////////////////////////////////////////////////////
 	# Custom Response Handlers
 	#/////////////////////////////////////////////////////////////////////////////////////
 	#-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-

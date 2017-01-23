@@ -82,6 +82,59 @@
 				</commands>
 			</action>
 			
+			<!-- RECEIVER ACTIONS -->
+			<action indigoId="changePower">
+				<params>
+					<param indigoId="powerState" paramType="ParamTypeString" isRequired="True">
+						<invalidValueMessage><![CDATA[Please select the new power state for all zones]]></invalidValueMessage>
+					</param>
+				</params>
+				<commands>
+					<command>
+						<commandName>writeToTelnetConn</commandName>
+						<commandFormat><![CDATA[eval:"<10PR" + "%ap:powerState%"]]></commandFormat>
+					</command>
+					<command>
+						<commandName>writeToTelnetConn</commandName>
+						<commandFormat><![CDATA[eval:"?10"]]></commandFormat>
+					</command>
+				</commands>
+			</action>
+			<action indigoId="changeSource">
+				<params>
+					<param indigoId="zoneSource" paramType="ParamTypeString" isRequired="True">
+						<invalidValueMessage><![CDATA[Please select the new source for all zones]]></invalidValueMessage>
+					</param>
+				</params>
+				<commands>
+					<command>
+						<commandName>writeToTelnetConn</commandName>
+						<commandFormat><![CDATA[eval:"<10CH0" + "%ap:zoneSource%"]]></commandFormat>
+					</command>
+					<command>
+						<commandName>writeToTelnetConn</commandName>
+						<commandFormat><![CDATA[eval:"?10"]]></commandFormat>
+					</command>
+				</commands>
+			</action>
+			<action indigoId="changeMute">
+				<params>
+					<param indigoId="muteState" paramType="ParamTypeString" isRequired="True">
+						<invalidValueMessage><![CDATA[Please select the new mute state for all zones]]></invalidValueMessage>
+					</param>
+				</params>
+				<commands>
+					<command>
+						<commandName>writeToTelnetConn</commandName>
+						<commandFormat><![CDATA[eval:"<10MU" + "%ap:muteState%"]]></commandFormat>
+					</command>
+					<command>
+						<commandName>writeToTelnetConn</commandName>
+						<commandFormat><![CDATA[eval:"?10"]]></commandFormat>
+					</command>
+				</commands>
+			</action>
+
 			
 			<!-- ZONE DEVICE ACTIONS -->
 			<action indigoId="changeZoneSource">
