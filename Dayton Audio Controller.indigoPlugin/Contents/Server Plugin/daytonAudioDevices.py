@@ -62,7 +62,7 @@ class DaytonAudioReceiverDevice(RPFramework.RPFrameworkTelnetDevice.RPFrameworkT
 			# plugin (as child devices)
 			updateCommandList = []
 			for idx in range(1,int(self.indigoDevice.pluginProps.get(u'connectedSlaveUnits', '0')) + 2):
-				self.hostPlugin.logDebugMessage(u'Creating update request for unit ' + RPFramework.RPFrameworkUtils.to_unicode(idx), RPFramework.RPFrameworkPlugin.DEBUGLEVEL_HIGH)
+				self.hostPlugin.logger.threaddebug(u'Creating update request for unit ' + RPFramework.RPFrameworkUtils.to_unicode(idx))
 				updateCommandList.append(self.createZoneStatusRequestCommand(str(idx) + '0'))
 			
 			# queue up all of the commands at once (so they will run back to back)
@@ -74,6 +74,23 @@ class DaytonAudioReceiverDevice(RPFramework.RPFrameworkTelnetDevice.RPFrameworkT
 	#-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 	def createZoneStatusRequestCommand(self, zoneNumber):
 		return RPFramework.RPFrameworkCommand.RPFrameworkCommand(RPFramework.RPFrameworkTelnetDevice.CMD_WRITE_TO_DEVICE, commandPayload="?" + zoneNumber, postCommandPause=0.1)
+		
+		
+	#/////////////////////////////////////////////////////////////////////////////////////
+	# Validation and GUI functions
+	#/////////////////////////////////////////////////////////////////////////////////////
+	#-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+	# This routine is called to retrieve a dynamic list of elements for an action (or
+	# other ConfigUI based) routine
+	#-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+	def getConfigDialogMenuItems(self, filter, valuesDict, typeId, targetId):
+		sourceOptions = []
+		for x in range(1,7):
+			sourcePropName = u'source' + RPFramework.RPFrameworkUtils.to_unicode(x) + u'Label'
+			if self.indigoDevice.pluginProps[sourcePropName] != "":
+				sourceOptions.append((RPFramework.RPFrameworkUtils.to_unicode(x), u'Source ' + RPFramework.RPFrameworkUtils.to_unicode(x) + u': ' + self.indigoDevice.pluginProps[sourcePropName]))
+			
+		return sourceOptions
 				
 
 	#/////////////////////////////////////////////////////////////////////////////////////
@@ -91,11 +108,11 @@ class DaytonAudioReceiverDevice(RPFramework.RPFrameworkTelnetDevice.RPFrameworkT
 		
 		# calculate the zone number based on the receiver and zone found
 		zoneNumber = (int(statusInfo["RecvNum"]) - 1) * 6 + int(statusInfo["ZoneNum"])
-		self.hostPlugin.logDebugMessage(u'Received status update for Zone ' + RPFramework.RPFrameworkUtils.to_unicode(zoneNumber) + u': ' + RPFramework.RPFrameworkUtils.to_unicode(responseObj), RPFramework.RPFrameworkPlugin.DEBUGLEVEL_MED)
+		self.hostPlugin.logger.debug(u'Received status update for Zone ' + RPFramework.RPFrameworkUtils.to_unicode(zoneNumber) + u': ' + RPFramework.RPFrameworkUtils.to_unicode(responseObj))
 		
 		# attempt to find the zone within the child devices
 		if str(zoneNumber) in self.childDevices:
-			self.hostPlugin.logDebugMessage(u'Found zone as child device, updating states...', RPFramework.RPFrameworkPlugin.DEBUGLEVEL_HIGH)
+			self.hostPlugin.logger.threaddebug(u'Found zone as child device, updating states...')
 			zoneDevice = self.childDevices[str(zoneNumber)]
 			
 			zoneDevice.indigoDevice.updateStateOnServer(key=u'isPoweredOn', value=statusInfo["Power"] == "01")

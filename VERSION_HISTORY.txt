@@ -6,6 +6,9 @@ To update to the latest version of the application, please download the latest r
 =================================
 VERSION HISTORY
 =================================
+v1.0.5 [May 2017]
+* Fixed bug with setting the source for all zones
+
 v1.0.4 [August 2016]
 * Fixed bug when the plugin runs under Python 2.7
 
