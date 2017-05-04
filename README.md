@@ -1,6 +1,8 @@
 # Introduction
 This Indigo 6.0+ plugin allows Indigo to control the DAX66 6-Source/6-Zone Distributed Audio System from [Dayton Audio](http://www.daytonaudio.com/). Thanks to a robust protocol, this plugin is able to both read and set nearly every aspect of the receiver such as zone power, volume, treble, bass, and more.
 
+_**INDIGO 6 IMPORTANT NOTE:**_ The Indigo 6 version of this plugin is end-of-life with respect to new development, however the latest stable version on Indigo 6 is [still available](https://github.com/RogueProeliator/IndigoPlugins-DaytonAudio/releases/tag/v1.0.3) on the releases page and is working as expected at the moment. Please consider an upgrade to Indigo 7 to support further development of our favorite HA platform!
+
 # Hardware Requirements
 This plugin works exclusively with the DAX66 6-Source/6-Zone Distributed Audio System. It supports daisy-chain configuration for multiple receivers (one master and up to two connected slaves) as well as having multiple master receivers on the network. You will need a serial connection from any master receiver to your computer.
 
