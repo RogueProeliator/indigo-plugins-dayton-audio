@@ -116,8 +116,11 @@
 					<Option value="18">18</Option>
 				</List>
 			</Field>
-			<Field id="maxVolumne" type="textfield" defaultvalue="30">
-				<Label>Max Volume:</Label>
+			<Field id="maxVolumne" type="textfield" defaultvalue="38">
+				<Label>Max Volume (Slider):</Label>
+			</Field>
+			<Field id="maxVolumeInstructions" type="label" fontSize="small">
+				<Label>Sets a maximum volume allowed when using the dimmer slider for adjustments. Does not affect explicit actions. (Valid values: 1-38)</Label>
 			</Field>
 			<Field id="address" type="textfield" hidden='true' >
 				<Label/>

@@ -81,4 +81,3 @@ class Plugin(RPFramework.RPFrameworkPlugin.RPFrameworkPlugin):
 		except:
 			self.exceptionLog()
 			return (False, valuesDict)
-			

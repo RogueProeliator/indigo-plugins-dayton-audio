@@ -66,7 +66,7 @@
 					<param indigoId="maxVolumne" paramType="ParamTypeInteger" isRequired="True">
 						<invalidValueMessage><![CDATA[Please enter the maximum allowed volume for this zone]]></invalidValueMessage>
 						<minValue>1</minValue>
-						<maxValue>60</maxValue>
+						<maxValue>38</maxValue>
 					</param>
 				</params>
 				<guiConfiguration>
@@ -288,7 +288,7 @@
 				<commands>
 					<command>
 						<commandName>writeToTelnetConn</commandName>
-						<commandFormat><![CDATA[eval:"<" +  str((int((%dp:zoneNumber% - 1) / 6)) + 1) + str(((%dp:zoneNumber% - 1) % 6) + 1) + "VO" + str(max(min(int(%ap:actionValue% * 0.38), 38), 0)).zfill(2)]]></commandFormat>
+						<commandFormat><![CDATA[eval:"<" +  str((int((%dp:zoneNumber% - 1) / 6)) + 1) + str(((%dp:zoneNumber% - 1) % 6) + 1) + "VO" + str(max(min(int(%ap:actionValue% * 0.38), %dp:maxVolume%), 0)).zfill(2)]]></commandFormat>
 					</command>
 					<command>
 						<commandName>writeToTelnetConn</commandName>
