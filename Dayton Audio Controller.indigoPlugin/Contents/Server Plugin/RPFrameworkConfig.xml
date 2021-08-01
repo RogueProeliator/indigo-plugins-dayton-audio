@@ -63,6 +63,11 @@
 						<minValue>1</minValue>
 						<maxValue>18</maxValue>
 					</param>
+					<param indigoId="maxVolumne" paramType="ParamTypeInteger" isRequired="True">
+						<invalidValueMessage><![CDATA[Please enter the maximum allowed volume for this zone]]></invalidValueMessage>
+						<minValue>1</minValue>
+						<maxValue>60</maxValue>
+					</param>
 				</params>
 				<guiConfiguration>
 					<deviceAddressFormat><![CDATA[Zone %ap:zoneNumber%]]></deviceAddressFormat>

@@ -14,9 +14,6 @@
 #	GitHub repository:
 #		https://github.com/RogueProeliator/IndigoPlugins-DaytonAudio
 #
-#	Version 1.0:
-#		* Initial release of the plugin to Indigo users
-#
 #/////////////////////////////////////////////////////////////////////////////////////////
 #/////////////////////////////////////////////////////////////////////////////////////////
 
@@ -63,7 +60,7 @@ class Plugin(RPFramework.RPFrameworkPlugin.RPFrameworkPlugin):
 	#-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-	
 	def sendArbitraryCommand(self, valuesDict, typeId):
 		try:
-			deviceId = valuesDict.get(u'targetDevice', u'0')
+			deviceId    = valuesDict.get(u'targetDevice', u'0')
 			commandCode = valuesDict.get(u'commandToSend', u'').strip()
 		
 			if deviceId == u'' or deviceId == u'0':

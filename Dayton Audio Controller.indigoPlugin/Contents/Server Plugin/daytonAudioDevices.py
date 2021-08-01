@@ -11,7 +11,6 @@
 # Python imports
 #/////////////////////////////////////////////////////////////////////////////////////////
 import os
-import Queue
 import math
 import re
 import string
@@ -25,7 +24,7 @@ import RPFramework
 #/////////////////////////////////////////////////////////////////////////////////////////
 # Constants and configuration variables
 #/////////////////////////////////////////////////////////////////////////////////////////
-
+COMMAND_CREATE_ALL_ZONES = u'createAllZonesStatusRequestCommands'
 
 #/////////////////////////////////////////////////////////////////////////////////////////
 #/////////////////////////////////////////////////////////////////////////////////////////
@@ -57,7 +56,7 @@ class DaytonAudioReceiverDevice(RPFramework.RPFrameworkTelnetDevice.RPFrameworkT
 	# base class; it will be called on a concurrent thread
 	#-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 	def handleUnmanagedCommandInQueue(self, ipConnection, rpCommand):
-		if rpCommand.commandName == u'createAllZonesStatusRequestCommands':
+		if rpCommand.commandName == COMMAND_CREATE_ALL_ZONES:
 			# create a set of commands to update the status of all zones defined by the
 			# plugin (as child devices)
 			updateCommandList = []
@@ -103,8 +102,8 @@ class DaytonAudioReceiverDevice(RPFramework.RPFrameworkTelnetDevice.RPFrameworkT
 	def zoneStatusResponseReceived(self, responseObj, rpCommand):
 		# the response format is a string of numbers in pairs
 		responseParser = re.compile(r'^\s*#>(?P<RecvNum>\d{1})(?P<ZoneNum>\d{1})(?P<ControlStatus>\d{2})(?P<Power>\d{2})(?P<Mute>\d{2})(?P<DT>\d{2})(?P<Volume>\d{2})(?P<Treble>\d{2})(?P<Bass>\d{2})(?P<Balance>\d{2})(?P<Source>\d{2})\d{2}\s*$', re.I)
-		statusObj = responseParser.match(responseObj)
-		statusInfo = statusObj.groupdict()
+		statusObj      = responseParser.match(responseObj)
+		statusInfo     = statusObj.groupdict()
 		
 		# calculate the zone number based on the receiver and zone found
 		zoneNumber = (int(statusInfo["RecvNum"]) - 1) * 6 + int(statusInfo["ZoneNum"])
@@ -115,23 +114,27 @@ class DaytonAudioReceiverDevice(RPFramework.RPFrameworkTelnetDevice.RPFrameworkT
 			self.hostPlugin.logger.threaddebug(u'Found zone as child device, updating states...')
 			zoneDevice = self.childDevices[str(zoneNumber)]
 			
-			zoneDevice.indigoDevice.updateStateOnServer(key=u'isPoweredOn', value=statusInfo["Power"] == "01")
-			zoneDevice.indigoDevice.updateStateOnServer(key=u'onOffState', value=statusInfo["Power"] == "01")
+			statesToUpdate = []
+			statesToUpdate.append({ 'key' : u'isPoweredOn', 'value' : statusInfo["Power"] == "01" })
+			statesToUpdate.append({ 'key' : u'onOffState' , 'value' : statusInfo["Power"] == "01" })
 			
 			# volume will be an absolute value where as brightnessLevel is a scaled value to allow
 			# sliders (0-38 => 0-100)
-			zoneDevice.indigoDevice.updateStateOnServer(key=u'volume', value=int(statusInfo["Volume"]))
+			statesToUpdate.append({ 'key' : u'volume' , 'value' : int(statusInfo["Volume"]) })
 			
 			if statusInfo["Power"] == "01":
-				zoneDevice.indigoDevice.updateStateOnServer(key=u'brightnessLevel', value=int(math.floor(int(statusInfo["Volume"])*(100.0/38.0))))
+				brightnessLevel = int(math.floor(int(statusInfo["Volume"])*(100.0/38.0)))
+				statesToUpdate.append({ 'key' : u'brightnessLevel' , 'value' : brightnessLevel })
 			else:
-				zoneDevice.indigoDevice.updateStateOnServer(key=u'brightnessLevel', value=0)
+				statesToUpdate.append({ 'key' : u'brightnessLevel' , 'value' : 0 })
 			
-			zoneDevice.indigoDevice.updateStateOnServer(key=u'isMuted', value=(statusInfo["Mute"] == "01"))
-			zoneDevice.indigoDevice.updateStateOnServer(key=u'trebleLevel', value=int(statusInfo["Treble"]))
-			zoneDevice.indigoDevice.updateStateOnServer(key=u'bassLevel', value=int(statusInfo["Bass"]))
-			zoneDevice.indigoDevice.updateStateOnServer(key=u'balanceStatus', value=int(statusInfo["Balance"]))
-			zoneDevice.indigoDevice.updateStateOnServer(key=u'source', value=int(statusInfo["Source"]))
+			statesToUpdate.append({ 'key' : u'isMuted'       , 'value' : (statusInfo["Mute"] == "01") })
+			statesToUpdate.append({ 'key' : u'trebleLevel'   , 'value' : int(statusInfo["Treble"]) })
+			statesToUpdate.append({ 'key' : u'bassLevel'     , 'value' : int(statusInfo["Bass"]) })
+			statesToUpdate.append({ 'key' : u'balanceStatus' , 'value' : int(statusInfo["Balance"]) })
+			statesToUpdate.append({ 'key' : u'source'        , 'value' : int(statusInfo["Source"]) })
+			
+			zoneDevice.indigoDevice.updateStatesOnServer(statesToUpdate)
 				
 		
 #/////////////////////////////////////////////////////////////////////////////////////////

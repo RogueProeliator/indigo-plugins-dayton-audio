@@ -1,11 +1,12 @@
 Dayton Audio Controller Indigo Plugin
 https://github.com/RogueProeliator/IndigoPlugins-DaytonAudio
 
-To update to the latest version of the application, please download the latest release available at https://github.com/RogueProeliator/IndigoPlugins-DaytonAudio/releases or via the Check For Updates menu option if you already have a version installed.
-
 =================================
 VERSION HISTORY
 =================================
+v2.0.0 [August 2021]
+* Re-release and refresh for Indigo 2021.1+
+
 v1.0.5 [May 2017]
 * Fixed bug with setting the source for all zones
 
