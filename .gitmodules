@@ -1,0 +1,3 @@
+[submodule "src/Dayton Audio Controller.indigoPlugin/Contents/Server Plugin/RPFramework"]
+	path = src/Dayton Audio Controller.indigoPlugin/Contents/Server Plugin/RPFramework
+	url = https://github.com/RogueProeliator/indigo-plugins-rpframework-src
