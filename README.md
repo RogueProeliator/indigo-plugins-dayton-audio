@@ -4,4 +4,4 @@ This Indigo plugin allows Indigo to control the DAX66 6-Source/6-Zone Distribute
 [Full Documentation](https://github.com/RogueProeliator/indigo-plugins-dayton-audio/wiki) | [GitHub Repo](https://github.com/RogueProeliator/indigo-plugins-dayton-audio) | [Help Forum](https://forums.indigodomo.com/viewforum.php?f=62)
 
 _**Latest Versions for Previous Indigo Releases**_  
-[Plugin for Indigo 6](https://github.com/RogueProeliator/IndigoPlugins-DaytonAudio/releases/tag/v1.0.3) | [Plugin for Indigo 2022.1](https://github.com/RogueProeliator/indigo-plugins-dayton-audio/releases/tag/v1.0.3)
+[Plugin for Indigo 6](https://github.com/RogueProeliator/indigo-plugins-dayton-audio/releases/tag/v1.0.3) | [Plugin for Indigo 2022.1](https://github.com/RogueProeliator/indigo-plugins-dayton-audio/releases/tag/v1.0.3)
