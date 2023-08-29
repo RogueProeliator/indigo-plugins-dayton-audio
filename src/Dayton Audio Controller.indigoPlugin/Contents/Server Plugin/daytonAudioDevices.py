@@ -1,178 +1,161 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
-#/////////////////////////////////////////////////////////////////////////////////////////
-#/////////////////////////////////////////////////////////////////////////////////////////
+#######################################################################################
 # Dayton Audio Receiver Plugin by RogueProeliator <rp@rogueproeliator.com>
 # 	See plugin.py for more plugin details and information
-#/////////////////////////////////////////////////////////////////////////////////////////
-#/////////////////////////////////////////////////////////////////////////////////////////
+#######################################################################################
 
-#/////////////////////////////////////////////////////////////////////////////////////////
-# Python imports
-#/////////////////////////////////////////////////////////////////////////////////////////
-import os
-import Queue
+# region Python Imports
 import math
 import re
-import string
-import sys
-import threading
 
 import indigo
-import RPFramework
+
+from RPFramework.RPFrameworkTelnetDevice import RPFrameworkTelnetDevice
+from RPFramework.RPFrameworkNonCommChildDevice import RPFrameworkNonCommChildDevice
+from RPFramework.RPFrameworkCommand import RPFrameworkCommand
+# endregion
 
 
-#/////////////////////////////////////////////////////////////////////////////////////////
-# Constants and configuration variables
-#/////////////////////////////////////////////////////////////////////////////////////////
+class DaytonAudioReceiverDevice(RPFrameworkTelnetDevice):
 
-
-#/////////////////////////////////////////////////////////////////////////////////////////
-#/////////////////////////////////////////////////////////////////////////////////////////
-# DaytonAudioReceiver
-#	Handles the communications and status of a Dayton audio receiver which is connected
-#	via the serial port
-#/////////////////////////////////////////////////////////////////////////////////////////
-#/////////////////////////////////////////////////////////////////////////////////////////
-class DaytonAudioReceiverDevice(RPFramework.RPFrameworkTelnetDevice.RPFrameworkTelnetDevice):
-	
-	#/////////////////////////////////////////////////////////////////////////////////////
-	# Class construction and destruction methods
-	#/////////////////////////////////////////////////////////////////////////////////////
-	#-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+	#######################################################################################
+	# region Class construction and destruction methods
+	# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 	# Constructor called once upon plugin class receiving a command to start device
 	# communication. The plugin will call other commands when needed, simply zero out the
 	# member variables
-	#-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+	# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 	def __init__(self, plugin, device):
-		super(DaytonAudioReceiverDevice, self).__init__(plugin, device, connectionType=RPFramework.RPFrameworkTelnetDevice.CONNECTIONTYPE_SERIAL)
+		super().__init__(plugin, device, connection_type=RPFrameworkTelnetDevice.CONNECTIONTYPE_SERIAL)
 		self.activeControlZone = 0
-		
-		
-	#/////////////////////////////////////////////////////////////////////////////////////
-	# Processing and command functions
-	#/////////////////////////////////////////////////////////////////////////////////////
-	#-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+	# endregion
+	#######################################################################################
+
+	#######################################################################################
+	# region Processing and command functions
+	# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 	# This routine will process the commands that are not processed automatically by the
 	# base class; it will be called on a concurrent thread
-	#-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-	def handleUnmanagedCommandInQueue(self, ipConnection, rpCommand):
-		if rpCommand.commandName == u'createAllZonesStatusRequestCommands':
+	# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+	def handle_unmanaged_command_in_queue(self, ip_connection, rp_command):
+		if rp_command.commandName == "createAllZonesStatusRequestCommands":
 			# create a set of commands to update the status of all zones defined by the
 			# plugin (as child devices)
-			updateCommandList = []
-			for idx in range(1,int(self.indigoDevice.pluginProps.get(u'connectedSlaveUnits', '0')) + 2):
-				self.hostPlugin.logger.threaddebug(u'Creating update request for unit ' + RPFramework.RPFrameworkUtils.to_unicode(idx))
-				updateCommandList.append(self.createZoneStatusRequestCommand(str(idx) + '0'))
+			update_command_list = []
+			for idx in range(1, int(self.indigoDevice.pluginProps.get("connectedSlaveUnits", "0")) + 2):
+				self.host_plugin.logger.threaddebug(f"Creating update request for unit '{idx}'")
+				update_command_list.append(self.create_zone_status_request_command(f"{idx}0"))
 			
-			# queue up all of the commands at once (so they will run back to back)
-			self.queueDeviceCommands(updateCommandList)
+			# queue up all the commands at once (so they will run back to back)
+			self.queue_device_commands(update_command_list)
 	
-	#-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+	# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 	# This routine will be called in order to generate the commands necessary to update
 	# the status of a zone defined for this receiver
-	#-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-	def createZoneStatusRequestCommand(self, zoneNumber):
-		return RPFramework.RPFrameworkCommand.RPFrameworkCommand(RPFramework.RPFrameworkTelnetDevice.CMD_WRITE_TO_DEVICE, commandPayload="?" + zoneNumber, postCommandPause=0.1)
+	# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+	def create_zone_status_request_command(self, zone_number):
+		return RPFrameworkCommand(RPFrameworkTelnetDevice.CMD_WRITE_TO_DEVICE, command_payload=f"?{zone_number}", post_command_pause=0.1)
+
+	# endregion
+	#######################################################################################
 		
-		
-	#/////////////////////////////////////////////////////////////////////////////////////
-	# Validation and GUI functions
-	#/////////////////////////////////////////////////////////////////////////////////////
-	#-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+	#######################################################################################
+	# region Validation and GUI functions
+	# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 	# This routine is called to retrieve a dynamic list of elements for an action (or
 	# other ConfigUI based) routine
-	#-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+	# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 	def getConfigDialogMenuItems(self, filter, valuesDict, typeId, targetId):
-		sourceOptions = []
-		for x in range(1,7):
-			sourcePropName = u'source' + RPFramework.RPFrameworkUtils.to_unicode(x) + u'Label'
-			if self.indigoDevice.pluginProps[sourcePropName] != "":
-				sourceOptions.append((RPFramework.RPFrameworkUtils.to_unicode(x), u'Source ' + RPFramework.RPFrameworkUtils.to_unicode(x) + u': ' + self.indigoDevice.pluginProps[sourcePropName]))
+		source_options = []
+		for x in range(1, 7):
+			source_prop_name = f"source{x} Label"
+			if self.indigoDevice.pluginProps[source_prop_name] != "":
+				source_options.append((f"{x}", f"Source {x}: {self.indigoDevice.pluginProps[source_prop_name]}"))
 			
-		return sourceOptions
-				
+		return source_options
 
-	#/////////////////////////////////////////////////////////////////////////////////////
-	# Custom Response Handlers
-	#/////////////////////////////////////////////////////////////////////////////////////
-	#-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+	# endregion
+	#######################################################################################
+
+	#######################################################################################
+	# region Custom Response Handlers
+	# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 	# This callback is made whenever the plugin has received the response to a status
 	# request for a particular zone
-	#-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-	def zoneStatusResponseReceived(self, responseObj, rpCommand):
+	# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+	def zone_status_response_received(self, response_obj, rp_command):
 		# the response format is a string of numbers in pairs
-		responseParser = re.compile(r'^\s*#>(?P<RecvNum>\d{1})(?P<ZoneNum>\d{1})(?P<ControlStatus>\d{2})(?P<Power>\d{2})(?P<Mute>\d{2})(?P<DT>\d{2})(?P<Volume>\d{2})(?P<Treble>\d{2})(?P<Bass>\d{2})(?P<Balance>\d{2})(?P<Source>\d{2})\d{2}\s*$', re.I)
-		statusObj = responseParser.match(responseObj)
-		statusInfo = statusObj.groupdict()
+		response_parser = re.compile(r'^\s*#>(?P<RecvNum>\d{1})(?P<ZoneNum>\d{1})(?P<ControlStatus>\d{2})(?P<Power>\d{2})(?P<Mute>\d{2})(?P<DT>\d{2})(?P<Volume>\d{2})(?P<Treble>\d{2})(?P<Bass>\d{2})(?P<Balance>\d{2})(?P<Source>\d{2})\d{2}\s*$', re.I)
+		status_obj      = response_parser.match(response_obj)
+		status_info     = status_obj.groupdict()
 		
 		# calculate the zone number based on the receiver and zone found
-		zoneNumber = (int(statusInfo["RecvNum"]) - 1) * 6 + int(statusInfo["ZoneNum"])
-		self.hostPlugin.logger.debug(u'Received status update for Zone ' + RPFramework.RPFrameworkUtils.to_unicode(zoneNumber) + u': ' + RPFramework.RPFrameworkUtils.to_unicode(responseObj))
+		zone_number = (int(status_info["RecvNum"]) - 1) * 6 + int(status_info["ZoneNum"])
+		self.host_plugin.logger.debug(f"Received status update for Zone {zone_number}: {response_obj}")
 		
 		# attempt to find the zone within the child devices
-		if str(zoneNumber) in self.childDevices:
-			self.hostPlugin.logger.threaddebug(u'Found zone as child device, updating states...')
-			zoneDevice = self.childDevices[str(zoneNumber)]
+		if f"{zone_number}" in self.child_devices:
+			self.host_plugin.logger.threaddebug("Found zone as child device, updating states...")
+			zone_device = self.child_devices[f"{zone_number}"]
 			
-			zoneDevice.indigoDevice.updateStateOnServer(key=u'isPoweredOn', value=statusInfo["Power"] == "01")
-			zoneDevice.indigoDevice.updateStateOnServer(key=u'onOffState', value=statusInfo["Power"] == "01")
+			zone_device.indigoDevice.updateStateOnServer(key="isPoweredOn", value=status_info["Power"] == "01")
+			zone_device.indigoDevice.updateStateOnServer(key="onOffState", value=status_info["Power"] == "01")
 			
-			# volume will be an absolute value where as brightnessLevel is a scaled value to allow
+			# volume will be an absolute value wherein brightnessLevel is a scaled value to allow
 			# sliders (0-38 => 0-100)
-			zoneDevice.indigoDevice.updateStateOnServer(key=u'volume', value=int(statusInfo["Volume"]))
+			zone_device.indigoDevice.updateStateOnServer(key="volume", value=int(status_info["Volume"]))
 			
-			if statusInfo["Power"] == "01":
-				zoneDevice.indigoDevice.updateStateOnServer(key=u'brightnessLevel', value=int(math.floor(int(statusInfo["Volume"])*(100.0/38.0))))
+			if status_info["Power"] == "01":
+				zone_device.indigoDevice.updateStateOnServer(key="brightnessLevel", value=int(math.floor(int(status_info["Volume"])*(100.0/38.0))))
 			else:
-				zoneDevice.indigoDevice.updateStateOnServer(key=u'brightnessLevel', value=0)
+				zone_device.indigoDevice.updateStateOnServer(key="brightnessLevel", value=0)
 			
-			zoneDevice.indigoDevice.updateStateOnServer(key=u'isMuted', value=(statusInfo["Mute"] == "01"))
-			zoneDevice.indigoDevice.updateStateOnServer(key=u'trebleLevel', value=int(statusInfo["Treble"]))
-			zoneDevice.indigoDevice.updateStateOnServer(key=u'bassLevel', value=int(statusInfo["Bass"]))
-			zoneDevice.indigoDevice.updateStateOnServer(key=u'balanceStatus', value=int(statusInfo["Balance"]))
-			zoneDevice.indigoDevice.updateStateOnServer(key=u'source', value=int(statusInfo["Source"]))
-				
-		
-#/////////////////////////////////////////////////////////////////////////////////////////
-#/////////////////////////////////////////////////////////////////////////////////////////
-# DaytonAudioZone
-#	Handles the status and representation of a zone associated with a Dayton Audio multi-
-#	zone receiver
-#/////////////////////////////////////////////////////////////////////////////////////////
-#/////////////////////////////////////////////////////////////////////////////////////////
-class DaytonAudioZone(RPFramework.RPFrameworkNonCommChildDevice.RPFrameworkNonCommChildDevice):
+			zone_device.indigoDevice.updateStateOnServer(key="isMuted", value=(status_info["Mute"] == "01"))
+			zone_device.indigoDevice.updateStateOnServer(key="trebleLevel", value=int(status_info["Treble"]))
+			zone_device.indigoDevice.updateStateOnServer(key="bassLevel", value=int(status_info["Bass"]))
+			zone_device.indigoDevice.updateStateOnServer(key="balanceStatus", value=int(status_info["Balance"]))
+			zone_device.indigoDevice.updateStateOnServer(key="source", value=int(status_info["Source"]))
 
-	#/////////////////////////////////////////////////////////////////////////////////////
-	# Class construction and destruction methods
-	#/////////////////////////////////////////////////////////////////////////////////////
-	#-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+	# endregion
+	#######################################################################################
+
+
+class DaytonAudioZone(RPFrameworkNonCommChildDevice):
+
+	#######################################################################################
+	# region Class construction and destruction methods
+	# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 	# Constructor called once upon plugin class receiving a command to start device
 	# communication. The plugin will call other commands when needed, simply zero out the
 	# member variables
-	#-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+	# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 	def __init__(self, plugin, device):
-		super(DaytonAudioZone, self).__init__(plugin, device)
-		
-		
-	#/////////////////////////////////////////////////////////////////////////////////////
-	# Validation and GUI functions
-	#/////////////////////////////////////////////////////////////////////////////////////
-	#-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+		super().__init__(plugin, device)
+
+	# endregion
+	#######################################################################################
+
+	#######################################################################################
+	# region Validation and GUI functions
+	# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 	# This routine is called to retrieve a dynamic list of elements for an action (or
 	# other ConfigUI based) routine
-	#-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+	# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 	def getConfigDialogMenuItems(self, filter, valuesDict, typeId, targetId):
 		# we need the parent (receiver) device in order to get the list of
 		# available sources...
-		parentReceiver = self.hostPlugin.managedDevices[int(self.indigoDevice.pluginProps["sourceReceiver"])]
+		parent_receiver = self.host_plugin.managedDevices[int(self.indigoDevice.pluginProps["sourceReceiver"])]
 		
-		sourceOptions = []
-		for x in range(1,7):
-			sourcePropName = u'source' + RPFramework.RPFrameworkUtils.to_unicode(x) + u'Label'
-			if parentReceiver.indigoDevice.pluginProps[sourcePropName] != "":
-				sourceOptions.append((RPFramework.RPFrameworkUtils.to_unicode(x), u'Source ' + RPFramework.RPFrameworkUtils.to_unicode(x) + u': ' + parentReceiver.indigoDevice.pluginProps[sourcePropName]))
+		source_options = []
+		for x in range(1, 7):
+			source_prop_name = f"source{x}Label"
+			if parent_receiver.indigoDevice.pluginProps[source_prop_name] != "":
+				source_options.append((f"{x}", f"Source {x}: {parent_receiver.indigoDevice.pluginProps[source_prop_name]}"))
 			
-		return sourceOptions
-		
+		return source_options
+
+	# endregion
+	#######################################################################################
 	

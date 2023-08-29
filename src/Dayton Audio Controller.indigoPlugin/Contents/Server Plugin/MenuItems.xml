@@ -2,15 +2,11 @@
 <MenuItems>
     <MenuItem id="sendNonDocumentedCommand">
 		<Name>Send Arbitrary Command</Name>
-		<CallbackMethod>sendArbitraryCommand</CallbackMethod>
+		<CallbackMethod>send_arbitrary_command</CallbackMethod>
 		<ButtonTitle>Send</ButtonTitle>
 		<ConfigUI>
-			<Field id="sendArbitraryCommandTitle" type="label" fontColor="darkGray">
-				<Label>SEND ARBITRARY COMMAND</Label>
-			</Field>
-			<Field id="titleSeparator" type="separator" />
 			<Field type="label" id="commandSendInstructions" fontSize="small">
-				<Label>This allows sending an arbitrary command to the Onkyo receiver for use in debugging control codes. The code will be sent just as if from the other actions, but with any value typed here.</Label>
+				<Label>Allows sending an arbitrary command to the receiver for use in debugging control codes. The code will be sent just as if from the other actions, but with any value typed here.</Label>
 			</Field>
 			<Field id="targetDevice" type="menu">
 				<Label>Receiver:</Label>
@@ -24,6 +20,47 @@
 			</Field>
 		</ConfigUI>
 	</MenuItem>
+
 	<MenuItem id="deviceCmdsSeparator" type="separator" />
-	[DEBUGOPTIONS]
+	<MenuItem id="toggleDebug">
+		<Name>Toggle Debugging On/Off</Name>
+		<CallbackMethod>toggle_debug_enabled</CallbackMethod>
+	</MenuItem>
+	<MenuItem id="debugDumpDeviceDetails">
+		<Name>Log Device Details</Name>
+		<CallbackMethod>dump_device_details_to_log</CallbackMethod>
+		<ButtonTitle>Output</ButtonTitle>
+		<ConfigUI>
+			<Field id="dumpDeviceDetailsToLog_Title" type="label" fontColor="darkGray">
+				<Label>DEVICE DETAILS DEBUG</Label>
+			</Field>
+			<Field id="dumpDeviceDetailsToLog_TitleSeparator" type="separator" />
+			<Field type="label" id="dumpDeviceDetailsToLogInstructions" fontSize="small">
+				<Label>This function will dump the details of a plugin device to the Indigo Event Log to aid in debugging and forum posts.</Label>
+			</Field>
+			<Field id="devicesToDump" type="list">
+				<Label>Devices to Log:</Label>
+				<List class="indigo.devices" filter="self" />
+			</Field>
+		</ConfigUI>
+	</MenuItem>
+
+	<MenuItem id="updateSectionSeparator" />
+	<MenuItem id="viewLicense">
+		<Name>View License...</Name>
+		<ConfigUI>
+			<Field id="licenseText" type="label" fontSize="small">
+				<Label>MIT License
+
+Copyright (c) [2013 - Present] [Adam A. (@RogueProeliator)]
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+				</Label>
+			</Field>
+		</ConfigUI>
+	</MenuItem>
 </MenuItems>

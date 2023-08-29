@@ -46,7 +46,7 @@
 						<matchExpression><![CDATA[^\s*#>\d{22}\s*$]]></matchExpression>
 						<effects>
 							<effect effectType="RESPONSE_EFFECT_CALLBACK" evalResult="false">
-								<updateParam>zoneStatusResponseReceived</updateParam>
+								<updateParam>zone_status_response_received</updateParam>
 								<updateValueFormat></updateValueFormat>
 							</effect>
 						</effects>

@@ -1,9 +1,7 @@
 <?xml version="1.0"?>
 <Actions>
-	<!-- ******************************************************* -->
 	<!-- Actions which are generated into receiver-wide commands -->
-	<!-- ******************************************************* -->
-	<Action id="changePower" deviceFilter="self.daytonAudioReceiver">
+	<Action id="changePower" uiPath="DeviceActions" deviceFilter="self.daytonAudioReceiver">
 		<Name>Set Power (All Zones)</Name>
 		<ConfigUI>
 			<Field type="menu" id="powerState">
@@ -14,9 +12,9 @@
 				</List>
 			</Field>
 		</ConfigUI>
-		<CallbackMethod>executeAction</CallbackMethod>
+		<CallbackMethod>execute_action</CallbackMethod>
 	</Action>
-	<Action id="changeSource" deviceFilter="self.daytonAudioReceiver">
+	<Action id="changeSource" uiPath="DeviceActions" deviceFilter="self.daytonAudioReceiver">
 		<Name>Set Source (All Zones)</Name>
 		<ConfigUI>
 			<Field type="menu" id="zoneSource">
@@ -24,16 +22,12 @@
 				<List class="self" filter="" method="getConfigDialogMenu" />
 			</Field>
 		</ConfigUI>
-		<CallbackMethod>executeAction</CallbackMethod>
+		<CallbackMethod>execute_action</CallbackMethod>
 	</Action>
 	<Action id="sep01" />
-	
-	
-	
-	<!-- ******************************************************* -->
+
 	<!-- Actions which are generated into zone-specific commands -->
-	<!-- ******************************************************* -->
-	<Action id="changeZoneSource" deviceFilter="self.daytonAudioZone">
+	<Action id="changeZoneSource" uiPath="DeviceActions" deviceFilter="self.daytonAudioZone">
 		<Name>Set Zone Source</Name>
 		<ConfigUI>
 			<Field type="menu" id="zoneSource">
@@ -41,20 +35,20 @@
 				<List class="self" filter="" method="getConfigDialogMenu" />
 			</Field>
 		</ConfigUI>
-		<CallbackMethod>executeAction</CallbackMethod>
+		<CallbackMethod>execute_action</CallbackMethod>
 	</Action>
 	<Action id="sep04" />
 	
-	<Action id="setZoneVolume" deviceFilter="self.daytonAudioZone">
+	<Action id="setZoneVolume" uiPath="DeviceActions" deviceFilter="self.daytonAudioZone">
 		<Name>Zone Volume - Set Value</Name>
 		<ConfigUI>
 			<Field id="volumeTarget" type="textfield">
 				<Label>Set To (0-38):</Label>
 			</Field>
 		</ConfigUI>
-		<CallbackMethod>executeAction</CallbackMethod>
+		<CallbackMethod>execute_action</CallbackMethod>
 	</Action>
-	<Action id="adjustZoneVolume" deviceFilter="self.daytonAudioZone">
+	<Action id="adjustZoneVolume" uiPath="DeviceActions" deviceFilter="self.daytonAudioZone">
 		<Name>Zone Volume - Adjust Up/Down</Name>
 		<ConfigUI>
 			<Field id="instructions" type="label" fontSize="small">
@@ -64,9 +58,9 @@
 				<Label>Adjust By (negative allowed):</Label>
 			</Field>
 		</ConfigUI>
-		<CallbackMethod>executeAction</CallbackMethod>
+		<CallbackMethod>execute_action</CallbackMethod>
 	</Action>
-	<Action id="setZoneMute" deviceFilter="self.daytonAudioZone">
+	<Action id="setZoneMute" uiPath="DeviceActions" deviceFilter="self.daytonAudioZone">
 		<Name>Zone Mute - Set</Name>
 		<ConfigUI>
 			<Field type="menu" id="muteState">
@@ -77,39 +71,39 @@
 				</List>
 			</Field>
 		</ConfigUI>
-		<CallbackMethod>executeAction</CallbackMethod>
+		<CallbackMethod>execute_action</CallbackMethod>
 	</Action>
-	<Action id="toggleZoneMuteStatus" deviceFilter="self.daytonAudioZone">
+	<Action id="toggleZoneMuteStatus" uiPath="DeviceActions" deviceFilter="self.daytonAudioZone">
 		<Name>Zone Mute - Toggle</Name>
-		<CallbackMethod>executeAction</CallbackMethod>
+		<CallbackMethod>execute_action</CallbackMethod>
 	</Action>
 	<Action id="sep05" />
 	
-	<Action id="setZoneTreble" deviceFilter="self.daytonAudioZone">
+	<Action id="setZoneTreble" uiPath="DeviceActions" deviceFilter="self.daytonAudioZone">
 		<Name>Zone Treble - Set Value</Name>
 		<ConfigUI>
 			<Field id="trebleValue" type="textfield">
 				<Label>Set To (0-14):</Label>
 			</Field>
 		</ConfigUI>
-		<CallbackMethod>executeAction</CallbackMethod>
+		<CallbackMethod>execute_action</CallbackMethod>
 	</Action>
-	<Action id="setZoneBass" deviceFilter="self.daytonAudioZone">
+	<Action id="setZoneBass" uiPath="DeviceActions" deviceFilter="self.daytonAudioZone">
 		<Name>Zone Bass - Set Value</Name>
 		<ConfigUI>
 			<Field id="bassValue" type="textfield">
 				<Label>Set To (0-14):</Label>
 			</Field>
 		</ConfigUI>
-		<CallbackMethod>executeAction</CallbackMethod>
+		<CallbackMethod>execute_action</CallbackMethod>
 	</Action>
-	<Action id="setZoneBalance" deviceFilter="self.daytonAudioZone">
+	<Action id="setZoneBalance" uiPath="DeviceActions" deviceFilter="self.daytonAudioZone">
 		<Name>Zone Balance - Set Value</Name>
 		<ConfigUI>
 			<Field id="balanceValue" type="textfield">
 				<Label>Set To (0-20):</Label>
 			</Field>
 		</ConfigUI>
-		<CallbackMethod>executeAction</CallbackMethod>
+		<CallbackMethod>execute_action</CallbackMethod>
 	</Action>
 </Actions>
