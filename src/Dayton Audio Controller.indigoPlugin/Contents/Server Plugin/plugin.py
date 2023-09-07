@@ -33,7 +33,7 @@ class Plugin(RPFrameworkPlugin):
 	# This routine will be called from the user executing the menu item action to send
 	# an arbitrary command code to the Dayton Audio receiver
 	# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-	def sendArbitraryCommand(self, valuesDict, typeId):
+	def send_arbitrary_command(self, valuesDict, typeId):
 		try:
 			device_id    = valuesDict.get(u'targetDevice', u'0')
 			command_code = valuesDict.get(u'commandToSend', u'').strip()

@@ -45,7 +45,7 @@ class DaytonAudioReceiverDevice(RPFrameworkTelnetDevice):
 			# plugin (as child devices)
 			update_command_list = []
 			for idx in range(1, int(self.indigoDevice.pluginProps.get("connectedSlaveUnits", "0")) + 2):
-				self.host_plugin.logger.threaddebug(f"Creating update request for unit '{idx}'")
+				self.host_plugin.logger.threaddebug(f"Creating update request for unit {idx}")
 				update_command_list.append(self.create_zone_status_request_command(f"{idx}0"))
 			
 			# queue up all the commands at once (so they will run back to back)
