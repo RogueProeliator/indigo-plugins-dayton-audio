@@ -40,7 +40,7 @@ class DaytonAudioReceiverDevice(RPFrameworkTelnetDevice):
 	# base class; it will be called on a concurrent thread
 	# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 	def handle_unmanaged_command_in_queue(self, ip_connection, rp_command):
-		if rp_command.commandName == "createAllZonesStatusRequestCommands":
+		if rp_command.command_name == "createAllZonesStatusRequestCommands":
 			# create a set of commands to update the status of all zones defined by the
 			# plugin (as child devices)
 			update_command_list = []
