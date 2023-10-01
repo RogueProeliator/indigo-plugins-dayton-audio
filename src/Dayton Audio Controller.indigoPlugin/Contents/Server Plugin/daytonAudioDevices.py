@@ -87,36 +87,36 @@ class DaytonAudioReceiverDevice(RPFrameworkTelnetDevice):
 	# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 	def zone_status_response_received(self, response_obj, rp_command):
 		# the response format is a string of numbers in pairs
-		response_parser = re.compile(r'^\s*#>(?P<RecvNum>\d{1})(?P<ZoneNum>\d{1})(?P<ControlStatus>\d{2})(?P<Power>\d{2})(?P<Mute>\d{2})(?P<DT>\d{2})(?P<Volume>\d{2})(?P<Treble>\d{2})(?P<Bass>\d{2})(?P<Balance>\d{2})(?P<Source>\d{2})\d{2}\s*$', re.I)
-		status_obj      = response_parser.match(response_obj)
-		status_info     = status_obj.groupdict()
-		
-		# calculate the zone number based on the receiver and zone found
-		zone_number = (int(status_info["RecvNum"]) - 1) * 6 + int(status_info["ZoneNum"])
-		self.host_plugin.logger.debug(f"Received status update for Zone {zone_number}: {response_obj}")
-		
-		# attempt to find the zone within the child devices
-		if f"{zone_number}" in self.child_devices:
-			self.host_plugin.logger.threaddebug("Found zone as child device, updating states...")
-			zone_device = self.child_devices[f"{zone_number}"]
-			
-			zone_device.indigoDevice.updateStateOnServer(key="isPoweredOn", value=status_info["Power"] == "01")
-			zone_device.indigoDevice.updateStateOnServer(key="onOffState", value=status_info["Power"] == "01")
-			
-			# volume will be an absolute value wherein brightnessLevel is a scaled value to allow
-			# sliders (0-38 => 0-100)
-			zone_device.indigoDevice.updateStateOnServer(key="volume", value=int(status_info["Volume"]))
-			
-			if status_info["Power"] == "01":
-				zone_device.indigoDevice.updateStateOnServer(key="brightnessLevel", value=int(math.floor(int(status_info["Volume"])*(100.0/38.0))))
-			else:
-				zone_device.indigoDevice.updateStateOnServer(key="brightnessLevel", value=0)
-			
-			zone_device.indigoDevice.updateStateOnServer(key="isMuted", value=(status_info["Mute"] == "01"))
-			zone_device.indigoDevice.updateStateOnServer(key="trebleLevel", value=int(status_info["Treble"]))
-			zone_device.indigoDevice.updateStateOnServer(key="bassLevel", value=int(status_info["Bass"]))
-			zone_device.indigoDevice.updateStateOnServer(key="balanceStatus", value=int(status_info["Balance"]))
-			zone_device.indigoDevice.updateStateOnServer(key="source", value=int(status_info["Source"]))
+		response_parser = re.compile(r'^\s*#>(?P<RecvNum>\d{1})(?P<ZoneNum>\d{1})(?P<ControlStatus>\d{2})(?P<Power>\d{2})(?P<Mute>\d{2})(?P<DT>\d{2})(?P<Volume>\d{2})(?P<Treble>\d{2})(?P<Bass>\d{2})(?P<Balance>\d{2})(?P<Source>\d{2})\d{2}\s*$', re.I or re.M)
+		for status_obj in response_parser.search(response_obj):
+			status_info = status_obj.groupdict()
+
+			# calculate the zone number based on the receiver and zone found
+			zone_number = (int(status_info["RecvNum"]) - 1) * 6 + int(status_info["ZoneNum"])
+			self.host_plugin.logger.debug(f"Received status update for Zone {zone_number}: {response_obj}")
+
+			# attempt to find the zone within the child devices
+			if f"{zone_number}" in self.child_devices:
+				self.host_plugin.logger.threaddebug("Found zone as child device, updating states...")
+				zone_device = self.child_devices[f"{zone_number}"]
+
+				zone_device.indigoDevice.updateStateOnServer(key="isPoweredOn", value=status_info["Power"] == "01")
+				zone_device.indigoDevice.updateStateOnServer(key="onOffState", value=status_info["Power"] == "01")
+
+				# volume will be an absolute value wherein brightnessLevel is a scaled value to allow
+				# sliders (0-38 => 0-100)
+				zone_device.indigoDevice.updateStateOnServer(key="volume", value=int(status_info["Volume"]))
+
+				if status_info["Power"] == "01":
+					zone_device.indigoDevice.updateStateOnServer(key="brightnessLevel", value=int(math.floor(int(status_info["Volume"])*(100.0/38.0))))
+				else:
+					zone_device.indigoDevice.updateStateOnServer(key="brightnessLevel", value=0)
+
+				zone_device.indigoDevice.updateStateOnServer(key="isMuted", value=(status_info["Mute"] == "01"))
+				zone_device.indigoDevice.updateStateOnServer(key="trebleLevel", value=int(status_info["Treble"]))
+				zone_device.indigoDevice.updateStateOnServer(key="bassLevel", value=int(status_info["Bass"]))
+				zone_device.indigoDevice.updateStateOnServer(key="balanceStatus", value=int(status_info["Balance"]))
+				zone_device.indigoDevice.updateStateOnServer(key="source", value=int(status_info["Source"]))
 
 	# endregion
 	#######################################################################################

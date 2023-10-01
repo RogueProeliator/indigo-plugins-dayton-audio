@@ -43,7 +43,7 @@
 				<deviceResponses>
 					<response id="zoneStatusResponse" respondToActionId="">
 						<criteriaFormatString><![CDATA[%cp:response%]]></criteriaFormatString>
-						<matchExpression><![CDATA[^\s*#>\d{22}\s*$]]></matchExpression>
+						<matchExpression></matchExpression>
 						<effects>
 							<effect effectType="RESPONSE_EFFECT_CALLBACK" evalResult="false">
 								<updateParam>zone_status_response_received</updateParam>
