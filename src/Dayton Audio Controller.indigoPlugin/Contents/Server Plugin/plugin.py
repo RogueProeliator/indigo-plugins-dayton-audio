@@ -28,6 +28,26 @@ class Plugin(RPFrameworkPlugin):
 	#######################################################################################
 
 	#######################################################################################
+	# region Validation and GUI functions
+	# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+	# This routine is called to retrieve a dynamic list of elements for an action (or
+	# other ConfigUI based) routine
+	# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+	def getConfigDialogMenuItems(self, filter, valuesDict, typeId, targetId):
+		# List of available sources
+		source_options = []
+		for x in range(1, 7):
+			source_prop_name = f"source{x}Label"
+			if self.indigoDevice.pluginProps[source_prop_name]:
+				source_options.append((f"{x}",
+									  f"Source{x}: " + self.indigoDevice.pluginProps[source_prop_name]))
+
+		return source_options
+
+	# endregion
+	#######################################################################################
+
+	#######################################################################################
 	# region Actions object callback handlers/routines
 	# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 	# This routine will be called from the user executing the menu item action to send
