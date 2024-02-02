@@ -2,9 +2,9 @@
 <Devices>
 
 	<!-- this device represents the main Dayton Audio zone receiver that is controlling the -->
-	<!-- connected zones... only the MAIN receiver need be defined, not any slave -->
-	<!-- receivers as they are controlled by the main. This is the one with the serial -->
-	<!-- connection to the server -->
+	<!-- connected zones... only the MAIN receiver need be defined, not any slave           -->
+	<!-- receivers as they are controlled by the main. This is the one with the serial      -->
+	<!-- connection to the server                                                           -->
 	<Device type="custom" id="daytonAudioReceiver">
 		<Name>Dayton Audio Zone Receiver</Name>
 		<ConfigUI>	
