@@ -31,10 +31,10 @@
 		<CallbackMethod>dump_device_details_to_log</CallbackMethod>
 		<ButtonTitle>Output</ButtonTitle>
 		<ConfigUI>
-			<Field id="dumpDeviceDetailsToLog_Title" type="label" fontColor="darkGray">
+			<Field id="dumpDeviceDetailsToLog_Title" type="label" fontSize="small">
 				<Label>DEVICE DETAILS DEBUG</Label>
 			</Field>
-			<Field id="dumpDeviceDetailsToLog_TitleSeparator" type="separator" />
+			<Field id="dumpDeviceDetailsToLog_TitleSeparator" type="separator" fontSize="small" />
 			<Field type="label" id="dumpDeviceDetailsToLogInstructions" fontSize="small">
 				<Label>This function will dump the details of a plugin device to the Indigo Event Log to aid in debugging and forum posts.</Label>
 			</Field>

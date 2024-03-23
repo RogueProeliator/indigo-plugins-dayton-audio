@@ -6,14 +6,14 @@
 	<Field id="pluginAuthorLabel" type="label" fontSize="small">
         <Label>Developed by RogueProeliator</Label>
     </Field>
-	<Field id="pluginDescriptionLabel" type="label" fontSize="small" fontColor="darkGray">
+	<Field id="pluginDescriptionLabel" type="label" fontSize="small">
         <Label>This Indigo plugin allows Indigo to act as a controller for the DAX66 6-Source/6-Zone Distributed Audio System from Dayton Audio.</Label>
     </Field>
 
 	<Field type="label" id="debugSpacer" fontSize="small">
 		<Label></Label>
 	</Field>
-	<Field id="debugOptionsTitle" type="label">
+	<Field id="debugOptionsTitle" type="label" fontSize="small">
 		<Label>DEBUGGING OPTIONS</Label>
 	</Field>
 	<Field id="debugSeparator2" type="separator" />
