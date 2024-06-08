@@ -100,23 +100,25 @@ class DaytonAudioReceiverDevice(RPFrameworkTelnetDevice):
 				self.host_plugin.logger.threaddebug("Found zone as child device, updating states...")
 				zone_device = self.child_devices[f"{zone_number}"]
 
-				zone_device.indigoDevice.updateStateOnServer(key="isPoweredOn", value=status_info["Power"] == "01")
-				zone_device.indigoDevice.updateStateOnServer(key="onOffState", value=status_info["Power"] == "01")
+				zone_states_to_update = []
+				zone_states_to_update.append({"key": "isPoweredOn", "value": status_info["Power"] == "01"})
+				zone_states_to_update.append({"key": "onOffState", "value": status_info["Power"] == "01"})
 
 				# volume will be an absolute value wherein brightnessLevel is a scaled value to allow
 				# sliders (0-38 => 0-100)
-				zone_device.indigoDevice.updateStateOnServer(key="volume", value=int(status_info["Volume"]))
-
+				zone_states_to_update.append({"key": "volume", "value": int(status_info["Volume"])})
 				if status_info["Power"] == "01":
-					zone_device.indigoDevice.updateStateOnServer(key="brightnessLevel", value=int(math.floor(int(status_info["Volume"])*(100.0/38.0))))
+					zone_states_to_update.append({"key": "brightnessLevel", "value": int(math.floor(int(status_info["Volume"])*(100.0/38.0)))})
 				else:
-					zone_device.indigoDevice.updateStateOnServer(key="brightnessLevel", value=0)
+					zone_states_to_update.append({"key": "brightnessLevel", "value": 0})
 
-				zone_device.indigoDevice.updateStateOnServer(key="isMuted", value=(status_info["Mute"] == "01"))
-				zone_device.indigoDevice.updateStateOnServer(key="trebleLevel", value=int(status_info["Treble"]))
-				zone_device.indigoDevice.updateStateOnServer(key="bassLevel", value=int(status_info["Bass"]))
-				zone_device.indigoDevice.updateStateOnServer(key="balanceStatus", value=int(status_info["Balance"]))
-				zone_device.indigoDevice.updateStateOnServer(key="source", value=int(status_info["Source"]))
+				zone_states_to_update.append({"key": "isMuted", "value": (status_info["Mute"] == "01")})
+				zone_states_to_update.append({"key": "trebleLevel", "value": int(status_info["Treble"])})
+				zone_states_to_update.append({"key": "bassLevel", "value": int(status_info["Bass"])})
+				zone_states_to_update.append({"key": "balanceStatus", "value": int(status_info["Balance"])})
+				zone_states_to_update.append({"key": "source", "value": int(status_info["Source"])})
+
+				zone_device.indigoDevice.updateStatesOnServer(zone_states_to_update)
 
 	# endregion
 	#######################################################################################

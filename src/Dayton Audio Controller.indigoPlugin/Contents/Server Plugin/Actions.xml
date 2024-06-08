@@ -24,7 +24,7 @@
 		</ConfigUI>
 		<CallbackMethod>execute_action</CallbackMethod>
 	</Action>
-	<Action id="changeMute" deviceFilter="self.daytonAudioReceiver">
+	<Action id="changeMute" uiPath="DeviceActions" deviceFilter="self.daytonAudioReceiver">
 		<Name>Set Mute (All Zones)</Name>
 		<ConfigUI>
 			<Field type="menu" id="muteState">
@@ -41,7 +41,7 @@
 
 	<!-- Actions which are generated into zone-specific commands -->
 	<Action id="changeZoneSource" uiPath="DeviceActions" deviceFilter="self.daytonAudioZone">
-		<Name>Set Zone Source</Name>
+		<Name>Zone - Set Source</Name>
 		<ConfigUI>
 			<Field type="menu" id="zoneSource">
 				<Label>Set Source:</Label>
