@@ -148,7 +148,7 @@ class DaytonAudioZone(RPFrameworkNonCommChildDevice):
 	def getConfigDialogMenuItems(self, filter, valuesDict, typeId, targetId):
 		# we need the parent (receiver) device in order to get the list of
 		# available sources...
-		parent_receiver = self.host_plugin.managedDevices[int(self.indigoDevice.pluginProps["sourceReceiver"])]
+		parent_receiver = self.host_plugin.managed_devices[int(self.indigoDevice.pluginProps["sourceReceiver"])]
 		
 		source_options = []
 		for x in range(1, 7):
