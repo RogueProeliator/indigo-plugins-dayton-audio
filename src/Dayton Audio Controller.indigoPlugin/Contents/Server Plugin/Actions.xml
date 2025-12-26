@@ -41,7 +41,7 @@
 
 	<!-- Zone-specific Actions -->
 	<Action id="changeZonePower" uiPath="DeviceActions" deviceFilter="self.daytonAudioZone">
-		<Name>Zone - Set Power</Name>
+		<Name>Zone Power - Set Value</Name>
 		<CallbackMethod>execute_action</CallbackMethod>
 		<ConfigUI>
 			<Field type="menu" id="powerState">
@@ -54,7 +54,7 @@
 		</ConfigUI>
 	</Action>
 	<Action id="changeZoneSource" uiPath="DeviceActions" deviceFilter="self.daytonAudioZone">
-		<Name>Zone - Set Source</Name>
+		<Name>Zone Source - Select Source</Name>
 		<CallbackMethod>execute_action</CallbackMethod>
 		<ConfigUI>
 			<Field type="menu" id="zoneSource">
