@@ -78,7 +78,7 @@
 		<Name>Zone Volume - Adjust Up/Down</Name>
 		<CallbackMethod>execute_action</CallbackMethod>
 		<ConfigUI>
-			<Field id="instructions" type="label" fontSize="small">
+			<Field id="instructions" type="label">
 				<Label>This action relies on the current state of the device in Indigo; if you are using non-Indigo controls such as wall pads, please be sure polling for status is setup in the device configuration dialog.</Label>
 			</Field>
 			<Field id="volumeAdjustment" type="textfield">
@@ -87,7 +87,7 @@
 		</ConfigUI>
 	</Action>
 	<Action id="setZoneMute" uiPath="DeviceActions" deviceFilter="self.daytonAudioZone">
-		<Name>Zone Mute - Set</Name>
+		<Name>Zone Mute - Set Value</Name>
 		<CallbackMethod>execute_action</CallbackMethod>
 		<ConfigUI>
 			<Field type="menu" id="muteState">

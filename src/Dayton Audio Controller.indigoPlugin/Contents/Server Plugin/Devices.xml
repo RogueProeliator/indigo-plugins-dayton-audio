@@ -8,13 +8,13 @@
 	<Device type="custom" id="daytonAudioReceiver">
 		<Name>Dayton Audio Zone Receiver</Name>
 		<ConfigUI>	
-			<Field id="deviceCreationInstructions" type="label">
+			<Field id="deviceCreationInstructions">
 				<Label>You need only create a device for the primary (master) receiver that is connected via serial to the Indigo server. Do not create a device for each slave as all communications must go through the master receiver.</Label>
 			</Field>
 			<Field type="label" id="commOptionsSpacer" fontSize="small">
 				<Label></Label>
 			</Field>
-			<Field id="commOptionsTitle" type="label" fontSize="small">
+			<Field id="commOptionsTitle" type="label">
 				<Label>COMMUNICATION OPTIONS</Label>
 			</Field>
 			<Field id="instructionSeparator2" type="separator" />
@@ -39,7 +39,7 @@
 			<Field type="label" id="sourceSeparator" fontSize="small">
 				<Label></Label>
 			</Field>
-			<Field id="sourceTitle" type="label" fontSize="small">
+			<Field id="sourceTitle" type="label">
 				<Label>SOURCE DEFINITIONS</Label>
 			</Field>
 			<Field id="sourceSeparator2" type="separator" />
@@ -47,7 +47,7 @@
 				<Label>You may label the inputs so that actions and status may reference the input by label. Blank out a label if your receiver does not support that particular input or you do not wish to see it in lists (e.g. no source is plugged in to that input).</Label>
 			</Field>
 			<Field id="source1Label" type="textfield" defaultValue="Tuner">
-				<Label>Source 1 Name:</Label>
+				<Label>Tuner Name:</Label>
 			</Field>
 			<Field id="source2Label" type="textfield" defaultValue="Source 2">
 				<Label>Source 2 Name:</Label>
