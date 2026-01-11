@@ -8,7 +8,7 @@
 	<Device type="custom" id="daytonAudioReceiver">
 		<Name>Dayton Audio Zone Receiver</Name>
 		<ConfigUI>	
-			<Field id="deviceCreationInstructions">
+			<Field id="deviceCreationInstructions" type="label">
 				<Label>You need only create a device for the primary (master) receiver that is connected via serial to the Indigo server. Do not create a device for each slave as all communications must go through the master receiver.</Label>
 			</Field>
 			<Field type="label" id="commOptionsSpacer" fontSize="small">

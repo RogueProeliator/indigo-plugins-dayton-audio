@@ -63,7 +63,7 @@ class Plugin(indigo.PluginBase):
         self.plugin_is_shutting_down = False
         
         # Configure logging
-        debug_level_str = self.pluginPrefs.get('debugLevel', '0')
+        debug_level_str = str(plugin_prefs.get('debugLevel', '0'))
         self.debug_level = DEBUG_LEVEL_MAP.get(debug_level_str, logging.WARNING)
         
         self.plugin_file_handler.setFormatter(
@@ -90,14 +90,26 @@ class Plugin(indigo.PluginBase):
         """
         Called after plugin initialization.
         """
+        import sys
+
+        # Log startup banner
+        self.logger.info(f"{'=' * 28} Initializing Plugin {'=' * 28}")
+        self.logger.info(f"{'Plugin Name:':<30} {self.pluginDisplayName}")
+        self.logger.info(f"{'Plugin Version:':<30} {self.pluginVersion}")
+        self.logger.info(f"{'Plugin ID:':<30} {self.pluginId}")
+        self.logger.info(f"{'Logging Level:':<30} {logging.getLevelName(self.debug_level)}")
+        self.logger.info(f"{'Indigo Version:':<30} {indigo.server.version}")
+        self.logger.info(f"{'Python Version:':<30} {sys.version.split()[0]}")
+        self.logger.info("=" * 72)
+
         self.logger.info("Plugin starting...")
-        
+
         # Initialize all receiver devices to a known state
         for dev in indigo.devices.iter("self"):
             if dev.deviceTypeId == 'daytonAudioReceiver':
                 self.logger.debug(f"Initializing receiver device: {dev.name}")
                 dev.updateStateOnServer('connectionState', value='Starting')
-        
+
         self.logger.info("Plugin started successfully")
 
     def shutdown(self) -> None:
@@ -539,7 +551,7 @@ class Plugin(indigo.PluginBase):
         """
         if not user_cancelled:
             # Update debug level
-            debug_level_str = values_dict.get('debugLevel', '0')
+            debug_level_str = str(values_dict.get('debugLevel', '0'))
             self.debug_level = DEBUG_LEVEL_MAP.get(debug_level_str, logging.WARNING)
             self.indigo_log_handler.setLevel(self.debug_level)
             
